@@ -45,8 +45,8 @@ const Features = () => {
                         initial={{ width: 0 }}
                         whileInView={{ width: '120px' }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.3 }}
-                        className="h-1 bg-rot-red mx-auto mb-6"
+                        transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+                        className="h-2 bg-rot-red mx-auto mb-6"
                     />
                     <h2 className="text-4xl md:text-5xl font-black text-white uppercase mb-4 distressed">
                         OUR CODE OF THE ROAD
@@ -64,17 +64,17 @@ const Features = () => {
                             initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: idx * 0.15 }}
-                            whileHover={{ y: -10 }}
-                            className="bg-black border-2 border-zinc-800 p-8 relative group hover:border-rot-red transition-all duration-300"
+                            transition={{ delay: idx * 0.15, duration: 0.6, ease: "easeOut" }}
+                            whileHover={{ y: -10, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+                            className="bg-black border-2 border-zinc-800 border-l-4 p-8 relative group hover:border-rot-red hover:bg-rot-red/5 transition-all duration-500 ease-out"
                         >
                             {/* Corner accents */}
-                            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-rot-red opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-rot-red opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-rot-red opacity-50 group-hover:opacity-100 transition-opacity duration-300 ease-out" />
+                            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-rot-red opacity-50 group-hover:opacity-100 transition-opacity duration-300 ease-out" />
 
                             <motion.div
                                 whileHover={{ rotate: 360 }}
-                                transition={{ duration: 0.6 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 15 }}
                                 className="mb-6 p-4 bg-rot-red/10 inline-block border-2 border-rot-red"
                             >
                                 <div className="text-rot-red">
@@ -82,7 +82,7 @@ const Features = () => {
                                 </div>
                             </motion.div>
 
-                            <h3 className="text-xl font-black text-white uppercase mb-4 tracking-wider group-hover:text-rot-red transition-colors">
+                            <h3 className="text-xl font-black text-white uppercase mb-4 tracking-wider group-hover:text-rot-red transition-colors duration-300 ease-out">
                                 {item.title}
                             </h3>
 

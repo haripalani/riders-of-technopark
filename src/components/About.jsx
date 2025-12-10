@@ -27,14 +27,14 @@ const About = () => {
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
                     >
                         <motion.div
                             initial={{ width: 0 }}
                             whileInView={{ width: '80px' }}
                             viewport={{ once: true }}
-                            transition={{ delay: 0.3, duration: 0.6 }}
-                            className="h-1 bg-rot-red mb-8"
+                            transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+                            className="h-2 bg-rot-red mb-8"
                         />
 
                         <h2 className="text-5xl md:text-6xl font-black uppercase text-white leading-tight mb-8 distressed">
@@ -61,7 +61,7 @@ const About = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: 0.5 + idx * 0.1 }}
+                                    transition={{ delay: 0.5 + idx * 0.1, duration: 0.6, ease: "easeOut" }}
                                     className="text-center border-t-4 border-rot-red pt-4"
                                 >
                                     <h3 className="text-4xl font-black text-white mb-2">{stat.value}</h3>
@@ -76,19 +76,19 @@ const About = () => {
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
                         className="relative"
                     >
                         <div className="relative vintage-border">
                             <motion.div
                                 whileHover={{ scale: 1.02 }}
-                                transition={{ duration: 0.3 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                                 className="relative overflow-hidden"
                             >
                                 <img
                                     src="https://images.unsplash.com/photo-1609630875171-b1321377ee65?q=80&w=2070&auto=format&fit=crop"
                                     alt="Riders Group"
-                                    className="w-full h-[600px] object-cover grayscale hover:grayscale-0 transition-all duration-700 border-4 border-white/10"
+                                    className="w-full h-[600px] object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-out border-4 border-white/10"
                                 />
                                 {/* Red overlay corners */}
                                 <div className="absolute top-0 left-0 w-20 h-20 border-t-4 border-l-4 border-rot-red"></div>

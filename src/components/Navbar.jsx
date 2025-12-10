@@ -22,7 +22,7 @@ const Navbar = () => {
 
     const navLinksRight = [
         { name: 'GALLERY', href: '#gallery' },
-        { name: 'BLOG', href: '#blog' },
+        { name: 'FAQ', href: '#faq' },
         { name: 'CONTACT', href: '#contact' },
     ];
 
@@ -30,7 +30,8 @@ const Navbar = () => {
         <motion.nav
             initial={{ y: -100 }}
             animate={{ y: 0 }}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-black/95 backdrop-blur-sm py-3' : 'bg-transparent py-6'
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${scrolled ? 'bg-black/95 backdrop-blur-sm py-3' : 'bg-transparent py-6'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4">
@@ -42,7 +43,8 @@ const Navbar = () => {
                                 key={idx}
                                 href={link.href}
                                 whileHover={{ scale: 1.05, color: '#dc2626' }}
-                                className="text-white text-sm font-bold tracking-widest hover:text-rot-red transition-colors"
+                                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                className="text-white text-sm font-bold tracking-widest hover:text-rot-red transition-colors duration-300 ease-out"
                             >
                                 {link.name}
                             </motion.a>
@@ -52,6 +54,7 @@ const Navbar = () => {
                     {/* Center Logo */}
                     <motion.div
                         whileHover={{ scale: 1.05 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
                         className="flex items-center justify-center"
                     >
                         <img
@@ -68,7 +71,8 @@ const Navbar = () => {
                                 key={idx}
                                 href={link.href}
                                 whileHover={{ scale: 1.05, color: '#dc2626' }}
-                                className="text-white text-sm font-bold tracking-widest hover:text-rot-red transition-colors"
+                                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                className="text-white text-sm font-bold tracking-widest hover:text-rot-red transition-colors duration-300 ease-out"
                             >
                                 {link.name}
                             </motion.a>
@@ -93,13 +97,14 @@ const Navbar = () => {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
                             className="lg:hidden mt-4 pb-4"
                         >
                             {[...navLinks, ...navLinksRight].map((link, idx) => (
                                 <a
                                     key={idx}
                                     href={link.href}
-                                    className="block py-2 text-white text-sm font-bold tracking-widest hover:text-rot-red transition-colors"
+                                    className="block py-2 text-white text-sm font-bold tracking-widest hover:text-rot-red transition-colors duration-300 ease-out"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     {link.name}

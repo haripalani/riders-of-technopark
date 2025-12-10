@@ -7,7 +7,7 @@ export default {
     theme: {
         extend: {
             colors: {
-                'rot-red': '#b91c1c', // More muted red (red-700) for better readability
+                'rot-red': '#dc2626', // Bright red (red-600) for better visibility
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],

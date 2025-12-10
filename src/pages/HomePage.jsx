@@ -4,6 +4,7 @@ import Hero from '../components/Hero';
 import About from '../components/About';
 import Features from '../components/Features';
 import Rides from '../components/Rides';
+import FAQ from '../components/FAQ';
 import CTA from '../components/CTA';
 import Footer from '../components/Footer';
 
@@ -15,6 +16,7 @@ const HomePage = () => {
             <About />
             <Features />
             <Rides />
+            <FAQ />
             <CTA />
             <Footer />
         </div>

@@ -26,6 +26,7 @@ const Footer = () => {
                     <div className="md:col-span-2">
                         <motion.div
                             whileHover={{ scale: 1.05 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             className="flex items-center gap-4 mb-6"
                         >
                             <img
@@ -47,7 +48,8 @@ const Footer = () => {
                                     key={idx}
                                     href={link.href}
                                     whileHover={{ scale: 1.1, backgroundColor: '#dc2626' }}
-                                    className="w-10 h-10 bg-zinc-900 hover:bg-rot-red flex items-center justify-center text-white transition-colors border border-zinc-800 hover:border-rot-red"
+                                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                    className="w-10 h-10 bg-zinc-900 hover:bg-rot-red flex items-center justify-center text-white transition-colors duration-300 ease-out border border-zinc-800 hover:border-rot-red"
                                     aria-label={link.label}
                                 >
                                     {link.icon}
@@ -65,7 +67,8 @@ const Footer = () => {
                                     <motion.a
                                         href={link.href}
                                         whileHover={{ x: 5, color: '#dc2626' }}
-                                        className="text-gray-400 hover:text-rot-red transition-colors text-sm"
+                                        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                                        className="text-gray-400 hover:text-rot-red transition-colors duration-300 ease-out text-sm"
                                     >
                                         {link.name}
                                     </motion.a>
@@ -91,10 +94,10 @@ const Footer = () => {
                         © {new Date().getFullYear()} <span className="text-white font-bold">R.O.T</span>. All rights reserved.
                     </p>
                     <div className="flex gap-6 text-xs">
-                        <a href="#" className="text-gray-500 hover:text-rot-red transition-colors uppercase tracking-widest">
+                        <a href="#" className="text-gray-500 hover:text-rot-red transition-colors duration-300 ease-out uppercase tracking-widest">
                             Privacy Policy
                         </a>
-                        <a href="#" className="text-gray-500 hover:text-rot-red transition-colors uppercase tracking-widest">
+                        <a href="#" className="text-gray-500 hover:text-rot-red transition-colors duration-300 ease-out uppercase tracking-widest">
                             Terms of Use
                         </a>
                     </div>

@@ -24,15 +24,15 @@ const CTA = () => {
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                 >
                     {/* Red accent line */}
                     <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: '150px' }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.3 }}
-                        className="h-1 bg-rot-red mx-auto mb-10"
+                        transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+                        className="h-2 bg-rot-red mx-auto mb-10"
                     />
 
                     <h2 className="text-5xl md:text-7xl font-black text-white uppercase mb-8 leading-tight distressed">
@@ -53,7 +53,8 @@ const CTA = () => {
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="group bg-rot-red text-white px-12 py-5 text-sm font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 border-4 border-rot-red inline-flex items-center gap-4"
+                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                        className="group bg-rot-red text-white px-12 py-5 text-sm font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-500 ease-out border-4 border-rot-red inline-flex items-center gap-4"
                     >
                         JOIN THE BROTHERHOOD
                         <motion.div

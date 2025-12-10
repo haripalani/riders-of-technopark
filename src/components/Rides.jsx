@@ -45,7 +45,7 @@ const Rides = () => {
                         viewport={{ once: true }}
                     >
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="w-16 h-1 bg-rot-red" />
+                            <div className="w-16 h-2 bg-rot-red" />
                             <span className="text-rot-red font-bold tracking-[0.2em] uppercase text-sm">Our Stories</span>
                         </div>
                         <h2 className="text-5xl font-black text-white uppercase distressed">
@@ -56,7 +56,8 @@ const Rides = () => {
                     <motion.a
                         href="#"
                         whileHover={{ x: 5 }}
-                        className="hidden md:flex items-center gap-2 text-white hover:text-rot-red transition-colors font-bold uppercase text-sm tracking-widest border-b-2 border-white hover:border-rot-red pb-1"
+                        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                        className="hidden md:flex items-center gap-2 text-white hover:text-rot-red transition-colors duration-300 ease-out font-bold uppercase text-sm tracking-widest border-b-2 border-white hover:border-rot-red pb-1"
                     >
                         ALL RIDES <ChevronRight size={18} />
                     </motion.a>
@@ -70,27 +71,27 @@ const Rides = () => {
                             initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="group relative h-[500px] overflow-hidden cursor-pointer border-4 border-zinc-900 hover:border-rot-red transition-all duration-300"
+                            transition={{ delay: idx * 0.1, duration: 0.6, ease: "easeOut" }}
+                            className="group relative h-[500px] overflow-hidden cursor-pointer border-4 border-zinc-900 hover:border-rot-red hover:shadow-[0_0_30px_rgba(220,38,38,0.3)] transition-all duration-500 ease-out"
                         >
                             {/* Image */}
                             <motion.img
                                 whileHover={{ scale: 1.1 }}
-                                transition={{ duration: 0.6 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 20 }}
                                 src={ride.image}
                                 alt={ride.title}
-                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
                             />
 
                             {/* Dark Gradient Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500 ease-out" />
 
                             {/* Red accent bar */}
                             <motion.div
                                 initial={{ width: 0 }}
                                 whileInView={{ width: '100%' }}
                                 viewport={{ once: true }}
-                                transition={{ delay: 0.5 + idx * 0.1 }}
+                                transition={{ delay: 0.5 + idx * 0.1, duration: 0.6, ease: "easeOut" }}
                                 className="absolute top-0 left-0 h-2 bg-rot-red"
                             />
 
@@ -100,13 +101,13 @@ const Rides = () => {
                                     initial={{ opacity: 0 }}
                                     whileInView={{ opacity: 1 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: 0.7 + idx * 0.1 }}
+                                    transition={{ delay: 0.7 + idx * 0.1, duration: 0.6, ease: "easeOut" }}
                                 >
                                     <span className="inline-block bg-rot-red text-white text-xs font-bold px-3 py-1 mb-3 tracking-wider uppercase">
                                         {ride.type}
                                     </span>
 
-                                    <h3 className="text-2xl font-black text-white uppercase mb-3 group-hover:text-rot-red transition-colors">
+                                    <h3 className="text-2xl font-black text-white uppercase mb-3 group-hover:text-rot-red transition-colors duration-300 ease-out">
                                         {ride.title}
                                     </h3>
 
