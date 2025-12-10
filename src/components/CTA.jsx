@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { loadContent } from '../data/content';
 
 const CTA = () => {
+    const [content, setContent] = useState(loadContent());
+
+    useEffect(() => {
+        setContent(loadContent());
+    }, []);
+
     return (
         <section id="contact" className="py-40 relative overflow-hidden">
             {/* Parallax Background */}
             <div
                 className="absolute inset-0 bg-cover bg-center bg-fixed"
                 style={{
-                    backgroundImage: 'url("https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=2070&auto=format&fit=crop")',
+                    backgroundImage: `url("${content.cta.backgroundImage}")`,
                 }}
             />
 
@@ -36,18 +43,17 @@ const CTA = () => {
                     />
 
                     <h2 className="text-5xl md:text-7xl font-black text-white uppercase mb-8 leading-tight distressed">
-                        READY TO RIDE
+                        {content.cta.title}
                         <br />
-                        <span className="text-rot-red">WITH US?</span>
+                        <span className="text-rot-red">{content.cta.titleAccent}</span>
                     </h2>
 
                     <p className="text-gray-300 text-xl md:text-2xl mb-4 max-w-3xl mx-auto leading-relaxed">
-                        The road is calling. The brotherhood is waiting.
+                        {content.cta.subtitle}
                     </p>
 
                     <p className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
-                        Based in Technopark, Trivandrum. We ride every weekend, explore every month,
-                        and build memories that last a lifetime.
+                        {content.cta.description}
                     </p>
 
                     <motion.button
@@ -56,7 +62,7 @@ const CTA = () => {
                         transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         className="group bg-rot-red text-white px-12 py-5 text-sm font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-500 ease-out border-4 border-rot-red inline-flex items-center gap-4"
                     >
-                        JOIN THE BROTHERHOOD
+                        {content.cta.buttonText}
                         <motion.div
                             animate={{ x: [0, 5, 0] }}
                             transition={{ repeat: Infinity, duration: 1.5 }}
@@ -66,7 +72,7 @@ const CTA = () => {
                     </motion.button>
 
                     <p className="text-gray-500 text-sm mt-8 tracking-wider">
-                        NO BIKE? NO PROBLEM. PASSION IS ALL YOU NEED.
+                        {content.cta.footerText}
                     </p>
                 </motion.div>
             </div>

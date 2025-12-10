@@ -1,44 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { loadContent } from '../data/content';
 
 const FAQ = () => {
     const [openIndex, setOpenIndex] = useState(null);
+    const [content, setContent] = useState(loadContent());
 
-    const faqs = [
-        {
-            question: "Do I need to own a motorcycle to join R.O.T?",
-            answer: "Not at all! While most of us ride, we welcome anyone passionate about motorcycles and the riding culture. You can join as an enthusiast, ride pillion with members, or work towards getting your own bike. Passion is the only requirement."
-        },
-        {
-            question: "What kind of rides do you organize?",
-            answer: "We organize a variety of rides - from short weekend breakfast runs to multi-day interstate adventures. Our calendar includes coastal rides, hill station trips, heritage tours, and charity rides. Every ride is planned meticulously with safety as the top priority."
-        },
-        {
-            question: "Is there a specific bike brand or engine size requirement?",
-            answer: "Absolutely not. Whether you ride a 100cc commuter or a 1000cc superbike, you're welcome. R.O.T is brand-agnostic. We believe in the spirit of riding, not the badge on your tank. Respect the machine, whatever it is."
-        },
-        {
-            question: "How do I join the club?",
-            answer: "Start by attending one of our weekend rides or meet-ups at Technopark. Get to know the members, understand our code, and if you vibe with the brotherhood, you can officially join. We value quality over quantity, so we take time to build real connections."
-        },
-        {
-            question: "What safety measures do you follow?",
-            answer: "Safety is non-negotiable. All riders must wear proper gear (helmet, gloves, jacket). We follow strict group riding protocols, conduct pre-ride briefings, have designated road captains and sweepers, and maintain emergency contacts. We ride smart, not reckless."
-        },
-        {
-            question: "Are family members and partners welcome?",
-            answer: "Definitely! We're a family-friendly community. We organize special rides where partners and families can join. Many of our events include non-riding activities where everyone can participate and bond beyond the bikes."
-        },
-        {
-            question: "What's the age requirement?",
-            answer: "You must be 18+ with a valid driving license to ride with us. For pillion riders or enthusiasts, we welcome anyone mature enough to understand and respect our code of conduct."
-        },
-        {
-            question: "How much does membership cost?",
-            answer: "R.O.T is not about making money. We have minimal membership fees that cover club merchandise, ride planning costs, and community events. The real investment is your time, passion, and commitment to the brotherhood."
-        }
-    ];
+    useEffect(() => {
+        setContent(loadContent());
+    }, []);
 
     return (
         <section id="faq" className="py-32 bg-zinc-950 relative overflow-hidden">
@@ -67,16 +38,16 @@ const FAQ = () => {
                         />
                     </div>
                     <h2 className="text-4xl md:text-5xl font-black text-white uppercase mb-4 distressed">
-                        Got Questions?
+                        {content.faq.title}
                     </h2>
                     <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                        Everything you need to know about joining the R.O.T brotherhood
+                        {content.faq.subtitle}
                     </p>
                 </motion.div>
 
                 {/* FAQ Accordion */}
                 <div className="space-y-4">
-                    {faqs.map((faq, idx) => (
+                    {content.faq.questions.map((faq, idx) => (
                         <motion.div
                             key={idx}
                             initial={{ opacity: 0, y: 20 }}

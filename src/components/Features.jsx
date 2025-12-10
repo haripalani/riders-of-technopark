@@ -1,29 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Users, Wrench, Award } from 'lucide-react';
+import { loadContent } from '../data/content';
 
 const Features = () => {
-    const values = [
-        {
-            title: "DISCIPLINE",
-            desc: "No reckless riding. No showboating. We ride smart, ride safe, ride together.",
-            icon: <Shield className="w-10 h-10" />
-        },
-        {
-            title: "BROTHERHOOD",
-            desc: "More than riders. We're family. We look out for each other on and off the road.",
-            icon: <Users className="w-10 h-10" />
-        },
-        {
-            title: "PASSION",
-            desc: "It's not about the bike brand or engine size. It's about the love for the ride.",
-            icon: <Wrench className="w-10 h-10" />
-        },
-        {
-            title: "RESPECT",
-            desc: "Respect the machine, the road, fellow riders, and the communities we ride through.",
-            icon: <Award className="w-10 h-10" />
-        }
+    const [content, setContent] = useState(loadContent());
+
+    useEffect(() => {
+        setContent(loadContent());
+    }, []);
+
+    // Icon mapping
+    const icons = [
+        <Shield className="w-10 h-10" />,
+        <Users className="w-10 h-10" />,
+        <Wrench className="w-10 h-10" />,
+        <Award className="w-10 h-10" />
     ];
 
     return (
@@ -49,16 +41,16 @@ const Features = () => {
                         className="h-2 bg-rot-red mx-auto mb-6"
                     />
                     <h2 className="text-4xl md:text-5xl font-black text-white uppercase mb-4 distressed">
-                        OUR CODE OF THE ROAD
+                        {content.features.title}
                     </h2>
                     <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                        These aren't just words. They're the foundation of who we are.
+                        {content.features.subtitle}
                     </p>
                 </motion.div>
 
                 {/* Values Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {values.map((item, idx) => (
+                    {content.features.values.map((item, idx) => (
                         <motion.div
                             key={idx}
                             initial={{ opacity: 0, y: 50 }}
@@ -78,7 +70,7 @@ const Features = () => {
                                 className="mb-6 p-4 bg-rot-red/10 inline-block border-2 border-rot-red"
                             >
                                 <div className="text-rot-red">
-                                    {item.icon}
+                                    {icons[idx]}
                                 </div>
                             </motion.div>
 
