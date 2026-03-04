@@ -12,29 +12,27 @@ const Cursor = () => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    // Liquid spring config - high damping for smooth, heavy feel
-    const springConfig = { damping: 35, stiffness: 200, mass: 0.8 };
+    // Higher damping and stiffness for a more "expensive", smoother feel
+    const springConfig = { damping: 40, stiffness: 250, mass: 0.5 };
     const springX = useSpring(mouseX, springConfig);
     const springY = useSpring(mouseY, springConfig);
 
-    // Magnetic effect state
-    const [magneticPos, setMagneticPos] = useState({ x: 0, y: 0 });
-
     useEffect(() => {
-        if (typeof window !== 'undefined' && window.matchMedia("(hover: none)").matches) return;
+        if (typeof window === 'undefined' || window.matchMedia("(hover: none)").matches) return;
 
         const moveCursor = (e) => {
+            // Magnetic attraction logic
             if (activeElement) {
                 const rect = activeElement.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
 
-                // Attract towards center of interactive element
-                const distanceX = e.clientX - centerX;
-                const distanceY = e.clientY - centerY;
+                // 25% pull towards center - subtle but distinct "magnetic" feel
+                const x = centerX + (e.clientX - centerX) * 0.25;
+                const y = centerY + (e.clientY - centerY) * 0.25;
 
-                mouseX.set(centerX + distanceX * 0.35);
-                mouseY.set(centerY + distanceY * 0.35);
+                mouseX.set(x);
+                mouseY.set(y);
             } else {
                 mouseX.set(e.clientX);
                 mouseY.set(e.clientY);
@@ -43,7 +41,7 @@ const Cursor = () => {
         };
 
         const checkHover = (e) => {
-            const target = e.target.closest('a, button, [role="button"]');
+            const target = e.target.closest('a, button, [role="button"], input, .magnetic-target');
             if (target) {
                 setIsPointer(true);
                 setActiveElement(target);
@@ -53,8 +51,8 @@ const Cursor = () => {
             }
         };
 
-        window.addEventListener("mousemove", moveCursor);
-        window.addEventListener("mouseover", checkHover);
+        window.addEventListener("mousemove", moveCursor, { passive: true });
+        window.addEventListener("mouseover", checkHover, { passive: true });
 
         return () => {
             window.removeEventListener("mousemove", moveCursor);

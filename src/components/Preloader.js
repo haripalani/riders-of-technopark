@@ -7,8 +7,8 @@ const Preloader = ({ onComplete }) => {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        const duration = 1200; // 1.2 seconds loading instead of 2
-        const interval = 20;
+        const duration = 1500; // Slightly longer for a smoother feel
+        const interval = 16;   // ~60fps target
         const steps = duration / interval;
         const increment = 100 / steps;
 

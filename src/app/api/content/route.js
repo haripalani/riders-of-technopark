@@ -34,8 +34,8 @@ export async function GET() {
             return NextResponse.json({ error: 'Content not found' }, { status: 404 });
         }
 
-        // Import default content for merging new fields
-        const { siteContent } = require('../../../data/content');
+        // Use dynamic import for ES module compatibility
+        const { siteContent } = await import('../../../data/content');
 
         // Deep merge logic for About section (where new fields were added)
         const mergedAbout = {

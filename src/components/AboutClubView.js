@@ -51,7 +51,6 @@ const AboutClubView = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1 }}
                 >
-                    <Cursor />
                     <Navbar content={content} />
 
                     <main className="pt-32 pb-20">
@@ -94,10 +93,10 @@ const AboutClubView = () => {
 
                                         {/* Image Part */}
                                         <motion.div
-                                            initial={{ opacity: 0, x: isImageRight ? 100 : -100 }}
+                                            initial={{ opacity: 0, x: isImageRight ? 80 : -80 }}
                                             whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: false, amount: 0.3, margin: "-100px" }}
-                                            transition={{ duration: 1, ease: [0.165, 0.84, 0.44, 1] }}
+                                            viewport={{ once: false, amount: 0.1, margin: "0px" }}
+                                            transition={{ duration: 0.8, ease: "easeOut" }}
                                             className={`relative ${isImageRight ? 'lg:order-2' : 'lg:order-1'} group`}
                                         >
                                             {/* Decorative Elements */}
@@ -130,16 +129,17 @@ const AboutClubView = () => {
 
                                         {/* Content Part */}
                                         <motion.div
-                                            initial={{ opacity: 0, x: isImageRight ? -100 : 100 }}
+                                            initial={{ opacity: 0, x: isImageRight ? 80 : -80 }}
                                             whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: false, amount: 0.3, margin: "-100px" }}
-                                            transition={{ duration: 1, ease: [0.165, 0.84, 0.44, 1] }}
+                                            viewport={{ once: false, amount: 0.1, margin: "0px" }}
+                                            transition={{ duration: 0.8, ease: "easeOut" }}
                                             className={`${isImageRight ? 'lg:order-1' : 'lg:order-2'} relative z-10`}
                                         >
                                             <div className="flex items-center gap-6 mb-8 group pl-4 border-l-2 border-rot-red/30">
                                                 <motion.span
                                                     whileInView={{ width: '40px' }}
                                                     initial={{ width: '0px' }}
+                                                    viewport={{ once: false }}
                                                     className="h-1 bg-rot-red shadow-[0_0_10px_#dc2626]"
                                                 ></motion.span>
                                                 <span className="text-rot-red font-black text-2xl tracking-[0.3em] drop-shadow-[0_0_10px_rgba(220,38,38,0.3)]">
@@ -184,8 +184,8 @@ const AboutClubView = () => {
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0.9 }}
                                         whileInView={{ opacity: 1, scale: 1 }}
-                                        viewport={{ once: false }}
-                                        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                                     >
                                         <div className="flex items-center justify-center gap-6 mb-12">
                                             <div className="w-12 h-[1px] bg-zinc-800"></div>
