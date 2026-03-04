@@ -15,7 +15,16 @@ const QuestionSchema = new mongoose.Schema({
     answer: String
 }, { _id: false });
 
+const StorySchema = new mongoose.Schema({
+    id: Number,
+    title: String,
+    content: String,
+    image: String,
+    imageSide: { type: String, enum: ['left', 'right'], default: 'right' }
+}, { _id: false });
+
 const ContentSchema = new mongoose.Schema({
+    _id: String,
     hero: {
         backgroundImage: String,
         tagline: String,
@@ -30,7 +39,13 @@ const ContentSchema = new mongoose.Schema({
         stats: [{
             label: String,
             value: String
-        }]
+        }],
+        story: [StorySchema],
+        storyCloser: {
+            subtitle: String,
+            title: String,
+            footer: String
+        }
     },
     features: {
         title: String,
@@ -69,7 +84,7 @@ const ContentSchema = new mongoose.Schema({
             phone: String
         }
     }
-}, { timestamps: true, strict: false });
+}, { timestamps: true, strict: false, collection: 'content' });
 
 // Force refresh of the model to avoid stale schemas in HMR
 if (mongoose.models.Content) {

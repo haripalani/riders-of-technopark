@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { loadContent } from '../data/content';
 
 const About = ({ content: initialContent }) => {
@@ -64,6 +65,25 @@ const About = ({ content: initialContent }) => {
                         <p className="text-gray-400 text-lg leading-relaxed mb-10">
                             {content.about.description2}
                         </p>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.4, duration: 0.6 }}
+                            className="mb-12"
+                        >
+                            <Link href="/about">
+                                <motion.button
+                                    whileHover={{ scale: 1.05, backgroundColor: '#dc2626' }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="px-8 py-4 border-2 border-rot-red text-white font-black uppercase tracking-[0.2em] text-sm flex items-center gap-3 group transition-colors"
+                                >
+                                    Read Our Full Story
+                                    <span className="group-hover:translate-x-1 transition-transform">→</span>
+                                </motion.button>
+                            </Link>
+                        </motion.div>
 
                         {/* Stats */}
                         <div className="grid grid-cols-3 gap-6">

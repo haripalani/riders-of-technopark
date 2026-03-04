@@ -29,8 +29,9 @@ const Hero = ({ content: initialContent }) => {
                     animate={{ scale: 1 }}
                     transition={{ duration: 10, ease: "easeOut" }}
                     src={content.hero.backgroundImage}
-                    alt="Riders of Technopark - Techie Motocycling Brotherhood"
+                    alt="Riders of Technopark - Kerala's Premier Tech Biking Brotherhood"
                     className="w-full h-full object-cover grayscale"
+                    fetchpriority="high"
                 />
             </div>
 
@@ -99,7 +100,7 @@ const Hero = ({ content: initialContent }) => {
                         transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
                         className="flex flex-col sm:flex-row gap-6 justify-center"
                     >
-                        <Link href="/rides">
+                        <Link href="#contact">
                             <motion.button
                                 whileHover={{ scale: 1.05, backgroundColor: '#b91c1c' }}
                                 whileTap={{ scale: 0.95 }}

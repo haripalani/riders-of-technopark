@@ -1,11 +1,11 @@
 import React from 'react';
-import RidesView from '../../components/RidesView';
+import AboutClubView from '../../components/AboutClubView';
 
 export const metadata = {
-    title: 'Rides Archive',
-    description: 'Relive every mile. Explore the complete collection of Riders of Technopark adventures, from weekend sprints to cross-country expeditions.',
+    title: 'About The Club',
+    description: 'The story of Riders of Technopark. From code to the open road, discover our journey and brotherhood.',
     alternates: {
-        canonical: '/rides',
+        canonical: '/about',
     },
 };
 
@@ -23,8 +23,8 @@ export default function Page() {
             {
                 '@type': 'ListItem',
                 position: 2,
-                name: 'Rides Archive',
-                item: 'https://ridersoftechnopark.com/rides'
+                name: 'About The Club',
+                item: 'https://ridersoftechnopark.com/about'
             }
         ]
     };
@@ -35,8 +35,7 @@ export default function Page() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
             />
-            <RidesView />
+            <AboutClubView />
         </>
     );
 }
-

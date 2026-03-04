@@ -9,13 +9,62 @@ export const siteContent = {
     about: {
         ridersImage: "/assets/images/1-iPhcn7uG.jpg",
         title: "THE BROTHERHOOD BEYOND CODE",
-        description1: "R.O.T (Riders of Technopark) isn't just another weekend riding group. We're a disciplined community of IT professionals who found something more powerful than algorithms and deadlines — the raw freedom of the open road.",
+        description1: "R.O.T (Riders of Technopark) isn't just another weekend riding group. We're a disciplined community of IT professionals who found something more powerful than algorithms and deadlines the raw freedom of the open road.",
         description2: "What started as casual Sunday rides has evolved into a structured brotherhood. We plan like engineers, ride like warriors, and build bonds that last beyond the highway.",
         stats: [
-            { label: "COMMUNITY", value: "INCLUSIVE BROTHERHOOD" },
-            { label: "SAFETY", value: "VERIFIED RIDERS" },
+            { label: "COMMUNITY", value: "300+ MEMBERS" },
+            { label: "FOLLOWERS", value: "1K+ INSTAGRAM" },
             { label: "PASSION", value: "PURE ADRENALINE" }
-        ]
+        ],
+        story: [
+            {
+                id: 1,
+                title: "THE GENESIS",
+                content: "It wasn't a boardroom meeting that started it all. It was a simple message in a corporate chat: 'Anyone up for a Sunday ride?' Four techies showed up. No egos, just engines.",
+                image: "/assets/images/story/story_1.png",
+                imageSide: "right"
+            },
+            {
+                id: 2,
+                title: "THE FIRST GEAR",
+                content: "Our early rides were exploration. Finding hidden trails in the Western Ghats while discussing the latest framework updates. We realized the road speaks deeper than any code.",
+                image: "/assets/images/story/story_2.png",
+                imageSide: "left"
+            },
+            {
+                id: 3,
+                title: "THE CODE OF DISCIPLINE",
+                content: "As we grew, we brought our engineer mindsets to the road. Precision in every turn. Safety in every mile. We aren't just riders; we're a disciplined, syncronized formation.",
+                image: "/assets/images/story/story_3.png",
+                imageSide: "right"
+            },
+            {
+                id: 4,
+                title: "THE R.O.T BROTHERHOOD",
+                content: "Beyond the helmets, we found family. When a member's bike breaks down at 2 AM on a forest trail, 10 heads turn back. We never leave a brother behind. That's our core.",
+                image: "/assets/images/story/story_4.png",
+                imageSide: "left"
+            },
+            {
+                id: 5,
+                title: "TECHIE BY DAY, RIDER BY HEART",
+                content: "Our helmets hide the faces of developers, architects, and designers. But the road doesn't care about your job title. It only cares about how you handle the next curve.",
+                image: "/assets/images/story/story_5.png",
+                imageSide: "right"
+            },
+            {
+                id: 6,
+                title: "THE NEVER-ENDING HIGHWAY",
+                content: "With 300+ members and 1K+ Instagram followers, the journey has only just begun. The horizon is always calling, and our engines are always ready for the next adventure.",
+                image: "/assets/images/story/story_6.png",
+                imageSide: "left"
+            }
+        ],
+        storyCloser: {
+            subtitle: "The Journey Continues",
+            title: "THE BEST CHAPTERS ARE YET TO BE WRITTEN. MORE MILES, HIGHER PEAKS, AND DEEPER BONDS AWAIT ON THE HORIZON.",
+            footer: "RIDERS OF TECHNOPARK"
+        }
     },
     features: {
         title: "OUR CODE OF THE ROAD",
@@ -252,7 +301,14 @@ export const loadContent = () => {
         const savedContent = JSON.parse(saved);
         return {
             hero: { ...siteContent.hero, ...savedContent.hero },
-            about: { ...siteContent.about, ...savedContent.about },
+            about: {
+                ...siteContent.about,
+                ...savedContent.about,
+                story: (savedContent.about?.story && savedContent.about.story.length >= 6)
+                    ? savedContent.about.story
+                    : siteContent.about.story,
+                storyCloser: savedContent.about?.storyCloser || siteContent.about.storyCloser
+            },
             features: { ...siteContent.features, ...savedContent.features },
             rides: savedContent.rides || siteContent.rides,
             faq: {

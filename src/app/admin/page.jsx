@@ -88,6 +88,49 @@ const Admin = () => {
         }));
     };
 
+    const updateStoryBlock = (id, field, value) => {
+        setContent(prev => ({
+            ...prev,
+            about: {
+                ...prev.about,
+                story: prev.about.story.map(s =>
+                    s.id === id ? { ...s, [field]: value } : s
+                )
+            }
+        }));
+    };
+
+    const addStoryBlock = () => {
+        const newId = content.about.story.length > 0
+            ? Math.max(...content.about.story.map(s => s.id)) + 1
+            : 1;
+        setContent(prev => ({
+            ...prev,
+            about: {
+                ...prev.about,
+                story: [...(prev.about.story || []), {
+                    id: newId,
+                    title: "New Story Chapter",
+                    content: "Story content goes here...",
+                    image: "https://images.unsplash.com/photo-1558981852-426c6c22a060?q=80&w=800&auto=format&fit=crop",
+                    imageSide: "right"
+                }]
+            }
+        }));
+    };
+
+    const deleteStoryBlock = (id) => {
+        if (window.confirm('Delete this story section?')) {
+            setContent(prev => ({
+                ...prev,
+                about: {
+                    ...prev.about,
+                    story: prev.about.story.filter(s => s.id !== id)
+                }
+            }));
+        }
+    };
+
     const updateRide = (id, field, value) => {
         setContent(prev => ({
             ...prev,
@@ -500,6 +543,148 @@ const Admin = () => {
                                                 onChange={(e) => updateAbout('description2', e.target.value)}
                                                 className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300 min-h-[120px]"
                                             />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan="2" className="px-6 py-10 bg-zinc-900/30">
+                                            <div className="flex justify-between items-center mb-6">
+                                                <div>
+                                                    <h3 className="text-sm font-black uppercase tracking-[0.2em] text-rot-red">Storytelling Journey (Dedicated About Page)</h3>
+                                                    <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Manage the sections for the full /about page</p>
+                                                </div>
+                                                <motion.button
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    onClick={addStoryBlock}
+                                                    className="px-4 py-2 bg-rot-red hover:bg-red-800 transition-all duration-300 font-bold uppercase tracking-widest text-[10px] flex items-center gap-2"
+                                                >
+                                                    <Plus size={14} /> Add Story Chapter
+                                                </motion.button>
+                                            </div>
+
+                                            <div className="space-y-8">
+                                                {(content.about.story || []).map((block, idx) => (
+                                                    <div key={block.id || idx} className="bg-zinc-950 border border-zinc-800 p-6 relative group">
+                                                        <div className="absolute top-4 right-4 z-10">
+                                                            <button
+                                                                onClick={() => deleteStoryBlock(block.id)}
+                                                                className="p-2 text-gray-600 hover:text-red-500 transition-colors"
+                                                            >
+                                                                <X size={16} />
+                                                            </button>
+                                                        </div>
+
+                                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                                                            <div className="space-y-4">
+                                                                <div className="flex items-center gap-4 mb-2">
+                                                                    <span className="text-xs font-black text-rot-red tracking-widest">CHAPTER 0{idx + 1}</span>
+                                                                    <div className="h-px flex-1 bg-zinc-900"></div>
+                                                                </div>
+
+                                                                <div className="space-y-1">
+                                                                    <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Chapter Title</label>
+                                                                    <input
+                                                                        type="text"
+                                                                        value={block.title}
+                                                                        onChange={(e) => updateStoryBlock(block.id, 'title', e.target.value)}
+                                                                        className="w-full bg-zinc-900 border border-zinc-800 px-4 py-2 text-white focus:border-rot-red outline-none text-sm transition-all duration-300 font-black uppercase tracking-tighter"
+                                                                    />
+                                                                </div>
+
+                                                                <div className="space-y-1">
+                                                                    <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Content Text</label>
+                                                                    <textarea
+                                                                        value={block.content}
+                                                                        onChange={(e) => updateStoryBlock(block.id, 'content', e.target.value)}
+                                                                        className="w-full bg-zinc-900 border border-zinc-800 px-4 py-2 text-gray-400 focus:border-rot-red outline-none text-xs leading-relaxed transition-all duration-300 h-32 italic"
+                                                                    />
+                                                                </div>
+
+                                                                <div className="flex gap-4">
+                                                                    <div className="flex-1 space-y-1">
+                                                                        <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Image Side</label>
+                                                                        <select
+                                                                            value={block.imageSide}
+                                                                            onChange={(e) => updateStoryBlock(block.id, 'imageSide', e.target.value)}
+                                                                            className="w-full bg-zinc-900 border border-zinc-800 px-4 py-2 text-white focus:border-rot-red outline-none text-xs transition-all duration-300"
+                                                                        >
+                                                                            <option value="left">Left</option>
+                                                                            <option value="right">Right (Default)</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="space-y-2">
+                                                                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Caricature / Image</label>
+                                                                <ImageUploader
+                                                                    value={block.image}
+                                                                    onChange={(value) => updateStoryBlock(block.id, 'image', value)}
+                                                                    previewHeight="h-full min-h-[200px]"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan="2" className="px-6 py-10 bg-zinc-900/10 border-t border-zinc-800">
+                                            <div>
+                                                <h3 className="text-sm font-black uppercase tracking-[0.2em] text-rot-red mb-1">Story Closer (Inspirational Quote)</h3>
+                                                <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-6">The cinematic finale of your About page story</p>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <div className="space-y-1">
+                                                    <label className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Subtitle</label>
+                                                    <input
+                                                        type="text"
+                                                        value={content.about.storyCloser?.subtitle || ""}
+                                                        onChange={(e) => setContent({
+                                                            ...content,
+                                                            about: {
+                                                                ...content.about,
+                                                                storyCloser: { ...content.about.storyCloser, subtitle: e.target.value }
+                                                            }
+                                                        })}
+                                                        className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300 text-sm font-bold uppercase tracking-widest"
+                                                        placeholder="The Journey Continues"
+                                                    />
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <label className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Footer Text</label>
+                                                    <input
+                                                        type="text"
+                                                        value={content.about.storyCloser?.footer || ""}
+                                                        onChange={(e) => setContent({
+                                                            ...content,
+                                                            about: {
+                                                                ...content.about,
+                                                                storyCloser: { ...content.about.storyCloser, footer: e.target.value }
+                                                            }
+                                                        })}
+                                                        className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300 text-sm font-bold uppercase tracking-widest"
+                                                        placeholder="RIDERS OF TECHNOPARK"
+                                                    />
+                                                </div>
+                                                <div className="space-y-1 md:col-span-2">
+                                                    <label className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Main Quote / Title</label>
+                                                    <textarea
+                                                        value={content.about.storyCloser?.title || ""}
+                                                        onChange={(e) => setContent({
+                                                            ...content,
+                                                            about: {
+                                                                ...content.about,
+                                                                storyCloser: { ...content.about.storyCloser, title: e.target.value }
+                                                            }
+                                                        })}
+                                                        className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300 min-h-[100px] text-lg font-black uppercase tracking-tighter"
+                                                        placeholder="Enter the inspirational quote here..."
+                                                    />
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 </>

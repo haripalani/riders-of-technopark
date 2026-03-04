@@ -29,7 +29,6 @@ const Navbar = ({ content: initialContent }) => {
     const navLinks = [
         { name: 'HOME', href: '/#home' },
         { name: 'ABOUT CLUB', href: '/#about' },
-        { name: 'EVENTS', href: '/#events' },
         { name: 'RIDES', href: '/rides' },
     ];
 
