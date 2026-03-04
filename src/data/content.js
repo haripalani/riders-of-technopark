@@ -285,7 +285,7 @@ export const siteContent = {
             facebook: "#",
             whatsapp: "https://chat.whatsapp.com/ExQQpOF8Kun2HwdIHDVoN1",
             email: "mailto:ridersoftechnopark@gmail.com",
-            phone: "tel:+91xxxxxxxxxx"
+            phone: "tel:+917012230578"
         }
     }
 };

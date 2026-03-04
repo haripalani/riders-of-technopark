@@ -27,8 +27,12 @@ const ImageUploader = ({ value, onChange, label, preview = true, previewHeight =
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = pixelCrop.width;
-        canvas.height = pixelCrop.height;
+        // Automatic Downscaling to keep Base64 strings lean
+        const MAX_WIDTH = 1200;
+        const scaleFactor = Math.min(1, MAX_WIDTH / pixelCrop.width);
+
+        canvas.width = pixelCrop.width * scaleFactor;
+        canvas.height = pixelCrop.height * scaleFactor;
 
         ctx.drawImage(
             image,
@@ -38,8 +42,8 @@ const ImageUploader = ({ value, onChange, label, preview = true, previewHeight =
             pixelCrop.height,
             0,
             0,
-            pixelCrop.width,
-            pixelCrop.height
+            canvas.width,
+            canvas.height
         );
 
         return new Promise((resolve) => {
@@ -49,8 +53,32 @@ const ImageUploader = ({ value, onChange, label, preview = true, previewHeight =
                 reader.onloadend = () => {
                     resolve(reader.result);
                 };
-            }, 'image/jpeg', 0.95);
+            }, 'image/jpeg', 0.85); // Optimized compression
         });
+    };
+
+    const convertUrlToBase64 = async (url) => {
+        if (!url || url.startsWith('data:')) return;
+
+        try {
+            const image = await createImage(url);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Re-use downscaling for URLs too
+            const MAX_WIDTH = 1200;
+            const ratio = Math.min(1, MAX_WIDTH / image.width);
+
+            canvas.width = image.width * ratio;
+            canvas.height = image.height * ratio;
+
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+            const base64 = canvas.toDataURL('image/jpeg', 0.85);
+            onChange(base64);
+        } catch (error) {
+            console.error('Failed to convert URL to Base64:', error);
+            alert('Could not convert this URL. It might have CORS restrictions. Try downloading and uploading instead.');
+        }
     };
 
     const handleFileUpload = (e) => {
@@ -163,9 +191,20 @@ const ImageUploader = ({ value, onChange, label, preview = true, previewHeight =
                     <Upload size={16} />
                     Upload & Crop
                 </button>
-                <div className="flex-1 flex items-center gap-2 px-4 py-2 bg-zinc-800 border-2 border-zinc-700 text-sm font-bold uppercase tracking-wider">
-                    <Link size={16} className="text-gray-400" />
-                    <span className="text-gray-400">or Use URL</span>
+                <div className="flex-1 flex items-center justify-between gap-2 px-4 py-2 bg-zinc-800 border-2 border-zinc-700 text-sm font-bold uppercase tracking-wider">
+                    <div className="flex items-center gap-2">
+                        <Link size={16} className="text-gray-400" />
+                        <span className="text-gray-400">or Use URL</span>
+                    </div>
+                    {value && !value.startsWith('data:') && (
+                        <button
+                            type="button"
+                            onClick={() => convertUrlToBase64(value)}
+                            className="text-[10px] bg-rot-red/20 hover:bg-rot-red text-rot-red hover:text-white px-2 py-1 transition-all border border-rot-red/50"
+                        >
+                            Convert to Local
+                        </button>
+                    )}
                 </div>
             </div>
 
