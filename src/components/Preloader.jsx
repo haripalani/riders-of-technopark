@@ -7,7 +7,7 @@ const Preloader = ({ onComplete }) => {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        const duration = 2000; // 2 seconds loading
+        const duration = 1200; // 1.2 seconds loading instead of 2
         const interval = 20;
         const steps = duration / interval;
         const increment = 100 / steps;
@@ -31,7 +31,7 @@ const Preloader = ({ onComplete }) => {
             // Add a small delay at 100% before finishing
             const timeout = setTimeout(() => {
                 onComplete();
-            }, 1000);
+            }, 500);
             return () => clearTimeout(timeout);
         }
     }, [count, onComplete]);
