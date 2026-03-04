@@ -28,7 +28,7 @@ const Hero = ({ content: initialContent }) => {
                     animate={{ scale: 1 }}
                     transition={{ duration: 10, ease: "easeOut" }}
                     src={content.hero.backgroundImage}
-                    alt="Riders"
+                    alt="Riders of Technopark - Techie Motocycling Brotherhood"
                     className="w-full h-full object-cover grayscale"
                 />
             </div>

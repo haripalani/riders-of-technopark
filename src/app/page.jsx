@@ -1,66 +1,41 @@
-'use client';
+import React from 'react';
+import HomeView from '../components/HomeView';
 
-import React, { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import About from '../components/About';
-import Features from '../components/Features';
-import Rides from '../components/Rides';
-import FAQ from '../components/FAQ';
-import CTA from '../components/CTA';
-import Footer from '../components/Footer';
-import Preloader from '../components/Preloader';
-import { fetchLiveContent } from '../data/content.js';
-
-const HomePage = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [content, setContent] = useState(null);
-
-    useEffect(() => {
-        const loadInitialData = async () => {
-            const data = await fetchLiveContent();
-            setContent(data);
-
-            // Still check for loader session
-            const hasLoaded = localStorage.getItem('rot_has_loaded');
-            if (hasLoaded) {
-                setIsLoading(false);
-            }
-        };
-
-        loadInitialData();
-    }, []);
-
-    const handlePreloaderComplete = () => {
-        setIsLoading(false);
-        localStorage.setItem('rot_has_loaded', 'true');
-    };
-
-    if (!content) return <div className="bg-black min-h-screen" />;
-
-    return (
-        <div className="bg-black min-h-screen selection:bg-rot-red selection:text-white overflow-x-hidden">
-            <AnimatePresence mode="wait">
-                {isLoading && (
-                    <Preloader key="preloader" onComplete={handlePreloaderComplete} />
-                )}
-            </AnimatePresence>
-
-            {!isLoading && (
-                <>
-                    <Navbar content={content} />
-                    <Hero content={content} />
-                    <About content={content} />
-                    <Features content={content} />
-                    <Rides content={content} />
-                    <FAQ content={content} />
-                    <CTA content={content} />
-                    <Footer content={content} />
-                </>
-            )}
-        </div>
-    );
+export const metadata = {
+    title: 'Home',
+    description: 'Welcome to Riders of Technopark, Kerala\'s premier brotherhood of techie riders. Explore our journeys, values, and community.',
+    alternates: {
+        canonical: '/',
+    },
 };
 
-export default HomePage;
+export default function Page() {
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'Riders of Technopark',
+        url: 'https://ridersoftechnopark.com',
+        logo: 'https://ridersoftechnopark.com/assets/logo-white.svg',
+        sameAs: [
+            'https://www.instagram.com/ridersoftechnopark/',
+        ],
+        description: 'A disciplined community of IT professionals who found freedom beyond the screen through motorcycling.',
+        address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Trivandrum',
+            addressRegion: 'Kerala',
+            addressCountry: 'India'
+        }
+    };
+
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <HomeView />
+        </>
+    );
+}
+

@@ -61,7 +61,7 @@ const Rides = ({ content: initialContent }) => {
                                 <div className="absolute inset-0 overflow-hidden">
                                     <img
                                         src={ride.image}
-                                        alt={ride.title}
+                                        alt={`${ride.title} - ${ride.type} by Riders of Technopark`}
                                         className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
                                     />
                                 </div>

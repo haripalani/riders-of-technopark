@@ -99,7 +99,7 @@ const About = ({ content: initialContent }) => {
                             >
                                 <img
                                     src={content.about.ridersImage}
-                                    alt="Riders Group"
+                                    alt="Riders of Technopark - Motorcycling Brotherhood Group"
                                     className="w-full h-[600px] object-cover transition-all duration-700 ease-out border-4 border-white/10"
                                 />
                                 {/* Red overlay corners */}
