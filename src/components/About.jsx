@@ -1,15 +1,23 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { loadContent } from '../data/content';
 
-const About = () => {
-    const [content, setContent] = useState(loadContent());
+const About = ({ content: initialContent }) => {
+    const [content, setContent] = useState(initialContent || loadContent());
 
     useEffect(() => {
-        setContent(loadContent());
-    }, []);
+        if (initialContent) {
+            setContent(initialContent);
+        } else {
+            setContent(loadContent());
+        }
+    }, [initialContent]);
 
-    const stats = content.about.stats;
+    if (!content) return null;
+
+    const stats = content?.about?.stats || [];
 
     return (
         <section id="about" className="py-32 bg-black relative overflow-hidden">
@@ -38,24 +46,28 @@ const About = () => {
                         />
 
                         <h2 className="text-5xl md:text-6xl font-black uppercase text-white leading-tight mb-8 distressed">
-                            THE <span className="text-rot-red">BROTHERHOOD</span>
-                            <br />BEYOND CODE
+                            {content.about.title.split(' ')[0]}
+                            {content.about.title.split(' ').length > 1 && (
+                                <><br className="md:hidden" /> <span className="text-rot-red">{content.about.title.split(' ')[1]}</span></>
+                            )}
+                            {content.about.title.split(' ').length > 2 && (
+                                <>
+                                    <br />{content.about.title.split(' ').slice(2).join(' ')}
+                                </>
+                            )}
                         </h2>
 
                         <p className="text-gray-400 text-lg leading-relaxed mb-6">
-                            <strong className="text-white">R.O.T</strong> (Riders of Technopark) isn't just another weekend riding group.
-                            We're a disciplined community of IT professionals who found something more powerful than algorithms and
-                            deadlines — the raw freedom of the open road.
+                            {content.about.description1}
                         </p>
 
                         <p className="text-gray-400 text-lg leading-relaxed mb-10">
-                            What started as casual Sunday rides has evolved into a structured brotherhood. We plan like engineers,
-                            ride like warriors, and build bonds that last beyond the highway.
+                            {content.about.description2}
                         </p>
 
                         {/* Stats */}
                         <div className="grid grid-cols-3 gap-6">
-                            {stats.map((stat, idx) => (
+                            {stats.map((item, idx) => (
                                 <motion.div
                                     key={idx}
                                     initial={{ opacity: 0, y: 20 }}
@@ -64,8 +76,8 @@ const About = () => {
                                     transition={{ delay: 0.5 + idx * 0.1, duration: 0.6, ease: "easeOut" }}
                                     className="text-center border-t-4 border-rot-red pt-4"
                                 >
-                                    <h3 className="text-4xl font-black text-white mb-2">{stat.value}</h3>
-                                    <p className="text-gray-500 uppercase tracking-wider text-xs font-bold">{stat.label}</p>
+                                    <h3 className="text-xl md:text-2xl font-black text-white mb-2 uppercase leading-none">{item.value}</h3>
+                                    <p className="text-gray-500 uppercase tracking-wider text-xs font-bold">{item.label}</p>
                                 </motion.div>
                             ))}
                         </div>
@@ -86,9 +98,9 @@ const About = () => {
                                 className="relative overflow-hidden"
                             >
                                 <img
-                                    src="https://images.unsplash.com/photo-1609630875171-b1321377ee65?q=80&w=2070&auto=format&fit=crop"
+                                    src={content.about.ridersImage}
                                     alt="Riders Group"
-                                    className="w-full h-[600px] object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-out border-4 border-white/10"
+                                    className="w-full h-[600px] object-cover transition-all duration-700 ease-out border-4 border-white/10"
                                 />
                                 {/* Red overlay corners */}
                                 <div className="absolute top-0 left-0 w-20 h-20 border-t-4 border-l-4 border-rot-red"></div>

@@ -1,21 +1,29 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Users, Wrench, Award } from 'lucide-react';
 import { loadContent } from '../data/content';
 
-const Features = () => {
-    const [content, setContent] = useState(loadContent());
+const Features = ({ content: initialContent }) => {
+    const [content, setContent] = useState(initialContent || loadContent());
 
     useEffect(() => {
-        setContent(loadContent());
-    }, []);
+        if (initialContent) {
+            setContent(initialContent);
+        } else {
+            setContent(loadContent());
+        }
+    }, [initialContent]);
+
+    if (!content) return null;
 
     // Icon mapping
     const icons = [
-        <Shield className="w-10 h-10" />,
-        <Users className="w-10 h-10" />,
-        <Wrench className="w-10 h-10" />,
-        <Award className="w-10 h-10" />
+        <Shield key="shield" className="w-10 h-10" />,
+        <Users key="users" className="w-10 h-10" />,
+        <Wrench key="wrench" className="w-10 h-10" />,
+        <Award key="award" className="w-10 h-10" />
     ];
 
     return (
@@ -50,7 +58,7 @@ const Features = () => {
 
                 {/* Values Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {content.features.values.map((item, idx) => (
+                    {(content?.features?.values || []).map((item, idx) => (
                         <motion.div
                             key={idx}
                             initial={{ opacity: 0, y: 50 }}

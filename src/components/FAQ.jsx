@@ -1,15 +1,23 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { loadContent } from '../data/content';
 
-const FAQ = () => {
+const FAQ = ({ content: initialContent }) => {
     const [openIndex, setOpenIndex] = useState(null);
-    const [content, setContent] = useState(loadContent());
+    const [content, setContent] = useState(initialContent || loadContent());
 
     useEffect(() => {
-        setContent(loadContent());
-    }, []);
+        if (initialContent) {
+            setContent(initialContent);
+        } else {
+            setContent(loadContent());
+        }
+    }, [initialContent]);
+
+    if (!content) return null;
 
     return (
         <section id="faq" className="py-32 bg-zinc-950 relative overflow-hidden">
@@ -47,7 +55,7 @@ const FAQ = () => {
 
                 {/* FAQ Accordion */}
                 <div className="space-y-4">
-                    {content.faq.questions.map((faq, idx) => (
+                    {(content?.faq?.questions || []).map((faq, idx) => (
                         <motion.div
                             key={idx}
                             initial={{ opacity: 0, y: 20 }}

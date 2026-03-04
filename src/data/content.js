@@ -1,17 +1,20 @@
 // Content management data structure
 export const siteContent = {
     hero: {
-        backgroundImage: "https://images.unsplash.com/photo-1558981852-426c6c22a060?q=80&w=2070&auto=format&fit=crop",
+        backgroundImage: "/assets/images/rot_image_1.jpg",
         tagline: "TECHIE BY PROFESSION — RIDER BY PASSION",
         title: "RIDERS OF TECHNOPARK",
         subtitle: "Where code meets the open road. Join the brotherhood."
     },
     about: {
-        ridersImage: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?q=80&w=2070&auto=format&fit=crop",
+        ridersImage: "/assets/images/1-iPhcn7uG.jpg",
+        title: "THE BROTHERHOOD BEYOND CODE",
+        description1: "R.O.T (Riders of Technopark) isn't just another weekend riding group. We're a disciplined community of IT professionals who found something more powerful than algorithms and deadlines — the raw freedom of the open road.",
+        description2: "What started as casual Sunday rides has evolved into a structured brotherhood. We plan like engineers, ride like warriors, and build bonds that last beyond the highway.",
         stats: [
-            { label: "Active Riders", value: "250+" },
-            { label: "Years Strong", value: "5+" },
-            { label: "Rides Completed", value: "13" }
+            { label: "COMMUNITY", value: "INCLUSIVE BROTHERHOOD" },
+            { label: "SAFETY", value: "VERIFIED RIDERS" },
+            { label: "PASSION", value: "PURE ADRENALINE" }
         ]
     },
     features: {
@@ -20,54 +23,170 @@ export const siteContent = {
         values: [
             {
                 title: "DISCIPLINE",
-                desc: "No reckless riding. No showboating. We ride smart, ride safe, ride together."
+                desc: "No reckless riding. No showboating. We ride smart, ride safe, ride together.",
+                icon: "shield"
             },
             {
                 title: "BROTHERHOOD",
-                desc: "More than riders. We're family. We look out for each other on and off the road."
+                desc: "More than riders. We're family. We look out for each other on and off the road.",
+                icon: "users"
             },
             {
                 title: "PASSION",
-                desc: "It's not about the bike brand or engine size. It's about the love for the ride."
+                desc: "It's not about the bike brand or engine size. It's about the love for the ride.",
+                icon: "wrench"
             },
             {
                 title: "RESPECT",
-                desc: "Respect the machine, the road, fellow riders, and the communities we ride through."
+                desc: "Respect the machine, the road, fellow riders, and the communities we ride through.",
+                icon: "award"
             }
         ]
     },
     rides: [
         {
             id: 1,
-            title: "Munnar Highlands",
-            location: "Kerala",
-            date: "Jan 2025",
-            image: "https://images.unsplash.com/photo-1596423736531-48d6849488db?q=80&w=800&auto=format&fit=crop",
-            type: "Weekend Ride"
+            title: "Pullikanam",
+            location: "Idukki",
+            date: "16 March 2025",
+            image: "/assets/images/Pulikanam-DpFA_jd-.jpg",
+            type: "Hill Ride"
         },
         {
             id: 2,
-            title: "Coastal Thunder",
-            location: "Varkala",
-            date: "Feb 2025",
-            image: "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?q=80&w=800&auto=format&fit=crop",
-            type: "Day Trip"
+            title: "Baremore",
+            location: "Trivandrum",
+            date: "19 March 2025",
+            image: "/assets/images/Braemore-B7A-aAej.jpg",
+            type: "Estate Ride"
         },
         {
             id: 3,
-            title: "Ghat Explorer",
-            location: "Wayanad",
-            date: "Mar 2025",
-            image: "https://images.unsplash.com/photo-1625723044792-44de16ccb4e9?q=80&w=800&auto=format&fit=crop",
-            type: "3 Days"
+            title: "Ambanad",
+            location: "Kollam",
+            date: "14 June 2025",
+            image: "/assets/images/Ambanad-DCPU8Y96.jpg",
+            type: "Hill Ride"
         },
         {
             id: 4,
-            title: "Hill Station Run",
-            location: "Kodaikanal",
-            date: "Apr 2025",
-            image: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=800&auto=format&fit=crop",
-            type: "Long Ride"
+            title: "Kothayar",
+            location: "Kanyakumari",
+            date: "21 June 2025",
+            image: "/assets/images/Kothayar-BOMA66BO.jpg",
+            type: "Dam Visit"
+        },
+        {
+            id: 5,
+            title: "Mathammakulam",
+            location: "Idukki",
+            date: "13 July 2025",
+            image: "/assets/images/Mathamakulam-awqAgfdj.jpg",
+            type: "Offroad"
+        },
+        {
+            id: 6,
+            title: "AchanKovil",
+            location: "Kollam",
+            date: "26 July 2025",
+            image: "/assets/images/Achankovil-DltstGuH.jpg",
+            type: "Forest Ride"
+        },
+        {
+            id: 7,
+            title: "Kodaikanal",
+            location: "Tamil Nadu",
+            date: "15–17 August 2025",
+            image: "/assets/images/Kodaikanal-BXXJc7TZ.jpg",
+            type: "Stay Ride"
+        },
+        {
+            id: 8,
+            title: "Lemur",
+            location: "Kanyakumari",
+            date: "24 August 2025",
+            image: "/assets/images/Lemur-C6NTv-Fo.jpg",
+            type: "Sunset Ride"
+        },
+        {
+            id: 9,
+            title: "Bison Valley",
+            location: "Munnar",
+            date: "13–14 September 2025",
+            image: "/assets/images/Bison_valley-DsxzIuez.png",
+            type: "Offroad"
+        },
+        {
+            id: 10,
+            title: "Kappil",
+            location: "Varkala",
+            date: "28 September 2025",
+            image: "/assets/images/Kappil-BZzJ-hNy.jpg",
+            type: "Sunset Ride"
+        },
+        {
+            id: 11,
+            title: "Chai Pakoda, Kochi",
+            location: "Kochi",
+            date: "19 October 2025",
+            image: "/assets/images/chai pakoda-JL-nmI57.png",
+            type: "Breakfast Ride"
+        },
+        {
+            id: 12,
+            title: "Munroe Kayaking Island",
+            location: "Kollam",
+            date: "16 November 2025",
+            image: "/assets/images/Munroe-DZVCLEOu.jpg",
+            type: "Kayaking"
+        },
+        {
+            id: 13,
+            title: "Illikal Kallu",
+            location: "Kottayam",
+            date: "07 December 2025",
+            image: "/assets/images/Illikal-6ngE2u3s.jpg",
+            type: "Hill Ride"
+        },
+        {
+            id: 14,
+            title: "IBW 2025 - Panchgani, MH",
+            location: "Maharashtra",
+            date: "17 - 22 December 2025",
+            image: "/assets/images/IBW_2025.jpg",
+            type: "Upcoming"
+        },
+        {
+            id: 15,
+            title: "Thirumalai Kovil",
+            location: "Tamil Nadu",
+            date: "17 January 2026",
+            image: "/assets/images/Thirumalai Kovil.webp",
+            type: "Hill Ride"
+        },
+        {
+            id: 16,
+            title: "Pullikanam Trails",
+            location: "Idukki",
+            date: "01 February 2026",
+            image: "/assets/images/Pulikanam_Trails.png",
+            type: "Offroad"
+        },
+        {
+            id: 17,
+            title: "Thekkady Ride",
+            location: "Idukki",
+            date: "07–08 February 2026",
+            image: "/assets/images/Thekkady Ride.jpg",
+            type: "Stay Ride"
+        },
+        {
+            id: 18,
+            title: "Anniversary Ride (Thekkady)",
+            location: "Idukki",
+            date: "14–15 March 2026",
+            image: "/assets/images/Anniversary.jpeg",
+            type: "Upcoming"
         }
     ],
     faq: {
@@ -97,30 +216,32 @@ export const siteContent = {
         ]
     },
     cta: {
-        backgroundImage: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=2070&auto=format&fit=crop",
-        title: "READY TO RIDE",
-        titleAccent: "WITH US?",
-        subtitle: "The road is calling. The brotherhood is waiting.",
-        description: "Based in Technopark, Trivandrum. We ride every weekend, explore every month, and build memories that last a lifetime.",
-        buttonText: "JOIN THE BROTHERHOOD",
-        footerText: "NO BIKE? NO PROBLEM. PASSION IS ALL YOU NEED."
+        backgroundImage: "/assets/images/rot_image_2.jpg",
+        title: "Ready to",
+        titleAccent: "Ride?",
+        subtitle: "Join our brotherhood of riders and experience the thrill of the open road",
+        description: "Whether you're a seasoned rider or just starting your journey, there's a place for you in R.O.T.",
+        buttonText: "Join The Ride",
+        buttonUrl: "https://chat.whatsapp.com/ExQQpOF8Kun2HwdIHDVoN1",
+        footerText: "Ride. Respect. Brotherhood."
     },
     footer: {
         tagline: "Kerala's Premier Tech Riders",
         description: "More than a riding club. We're a brotherhood of IT professionals who found freedom beyond the screen.",
         location: "Technopark Campus",
         city: "Trivandrum, Kerala",
-        schedule: "Every Weekend",
+        schedule: "Every even weekend",
         socialLinks: {
-            instagram: "#",
+            instagram: "https://www.instagram.com/ridersoftechnopark/",
             facebook: "#",
-            email: "mailto:info@rot.com",
-            phone: "tel:+91"
+            whatsapp: "https://chat.whatsapp.com/ExQQpOF8Kun2HwdIHDVoN1",
+            email: "mailto:ridersoftechnopark@gmail.com",
+            phone: "tel:+91xxxxxxxxxx"
         }
     }
 };
 
-// Helper functions for localStorage management
+// Helper functions for content management
 export const loadContent = () => {
     if (typeof window === 'undefined') return siteContent;
 
@@ -129,7 +250,6 @@ export const loadContent = () => {
 
     try {
         const savedContent = JSON.parse(saved);
-        // Deep merge: ensure all new properties from siteContent exist
         return {
             hero: { ...siteContent.hero, ...savedContent.hero },
             about: { ...siteContent.about, ...savedContent.about },
@@ -153,6 +273,49 @@ export const loadContent = () => {
     } catch (error) {
         console.error('Error loading content:', error);
         return siteContent;
+    }
+};
+
+export const fetchLiveContent = async () => {
+    try {
+        const response = await fetch('/api/content');
+        if (!response.ok) throw new Error('Failed to fetch content');
+        const data = await response.json();
+
+        // Save to localStorage for offline fallback
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('rotContent', JSON.stringify(data));
+        }
+
+        return data;
+    } catch (error) {
+        console.error('API Fetch Error:', error);
+        return loadContent(); // Fallback to local
+    }
+};
+
+export const saveLiveContent = async (content) => {
+    try {
+        const response = await fetch('/api/content', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(content),
+        });
+
+        if (!response.ok) throw new Error('Failed to save content');
+        const data = await response.json();
+
+        // Update local storage as well
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('rotContent', JSON.stringify(data));
+        }
+
+        return data;
+    } catch (error) {
+        console.error('API Save Error:', error);
+        throw error;
     }
 };
 

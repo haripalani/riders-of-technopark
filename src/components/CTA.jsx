@@ -1,14 +1,22 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { loadContent } from '../data/content';
 
-const CTA = () => {
-    const [content, setContent] = useState(loadContent());
+const CTA = ({ content: initialContent }) => {
+    const [content, setContent] = useState(initialContent || loadContent());
 
     useEffect(() => {
-        setContent(loadContent());
-    }, []);
+        if (initialContent) {
+            setContent(initialContent);
+        } else {
+            setContent(loadContent());
+        }
+    }, [initialContent]);
+
+    if (!content || !content.cta) return null;
 
     return (
         <section id="contact" className="py-40 relative overflow-hidden">
@@ -48,15 +56,18 @@ const CTA = () => {
                         <span className="text-rot-red">{content.cta.titleAccent}</span>
                     </h2>
 
-                    <p className="text-gray-300 text-xl md:text-2xl mb-4 max-w-3xl mx-auto leading-relaxed">
+                    <p className="text-gray-300 text-xl md:text-2xl mb-4 max-w-3xl mx-auto leading-relaxed font-sans">
                         {content.cta.subtitle}
                     </p>
 
-                    <p className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
+                    <p className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto font-sans">
                         {content.cta.description}
                     </p>
 
-                    <motion.button
+                    <motion.a
+                        href={content.cta.buttonUrl || '#contact'}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -69,9 +80,9 @@ const CTA = () => {
                         >
                             <ArrowRight className="group-hover:text-rot-red" size={20} />
                         </motion.div>
-                    </motion.button>
+                    </motion.a>
 
-                    <p className="text-gray-500 text-sm mt-8 tracking-wider">
+                    <p className="text-gray-500 text-sm mt-8 tracking-wider font-sans">
                         {content.cta.footerText}
                     </p>
                 </motion.div>

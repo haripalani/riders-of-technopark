@@ -1,14 +1,23 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { loadContent } from '../data/content';
 
-const Hero = () => {
-    const [content, setContent] = useState(loadContent());
+const Hero = ({ content: initialContent }) => {
+    const [content, setContent] = useState(initialContent || loadContent());
 
     useEffect(() => {
-        setContent(loadContent());
-    }, []);
+        if (initialContent) {
+            setContent(initialContent);
+        } else {
+            setContent(loadContent());
+        }
+    }, [initialContent]);
+
+    if (!content) return null;
+
     return (
         <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden grit-overlay">
             {/* Dark Overlay Background */}
@@ -51,11 +60,20 @@ const Hero = () => {
                         transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
                         className="text-6xl md:text-8xl lg:text-9xl font-black text-white leading-none mb-8 uppercase distressed"
                     >
-                        RIDERS OF
-                        <br />
-                        <span className="text-white">
-                            TECHNOPARK
-                        </span>
+                        {content.hero.title.toUpperCase().includes("RIDERS OF TECHNOPARK") ? (
+                            <>
+                                RIDERS OF<br />
+                                <span>TECHNOPARK</span>
+                            </>
+                        ) : content.hero.title.includes('\n') ? (
+                            <>
+                                {content.hero.title.split('\n')[0]}
+                                <br />
+                                <span>{content.hero.title.split('\n')[1]}</span>
+                            </>
+                        ) : (
+                            content.hero.title
+                        )}
                     </motion.h1>
 
                     <motion.div
