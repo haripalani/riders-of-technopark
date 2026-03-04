@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { Upload, Link, Crop, X, Check } from 'lucide-react';
 import Cropper from 'react-easy-crop';
 

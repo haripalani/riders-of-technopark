@@ -1,4 +1,4 @@
-import React from 'react';
+
 import RidesView from '../../components/RidesView';
 
 export const metadata = {

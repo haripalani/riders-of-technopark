@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, useSpring, useMotionValue, useVelocity, useTransform } from 'framer-motion';
 
 const Cursor = () => {

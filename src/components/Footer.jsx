@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Mail, MessageCircle } from 'lucide-react';
 import Link from 'next/link';

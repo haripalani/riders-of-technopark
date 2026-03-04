@@ -1,4 +1,4 @@
-import React from 'react';
+
 import AboutClubView from '../../components/AboutClubView';
 
 export const metadata = {

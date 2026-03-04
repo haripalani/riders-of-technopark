@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Save, Image, X, Plus, Lock, LogIn } from 'lucide-react';
 import { loadContent, saveContent, siteContent, fetchLiveContent, saveLiveContent } from '../../data/content';
