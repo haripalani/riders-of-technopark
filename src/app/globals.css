@@ -119,7 +119,7 @@ body {
 
 .animate-marquee {
   display: flex !important;
-  animation: marquee 60s linear infinite;
+  animation: marquee 180s linear infinite;
 }
 
 .pause-on-hover:hover .animate-marquee {

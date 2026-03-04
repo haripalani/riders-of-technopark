@@ -65,7 +65,7 @@ const CTA = ({ content: initialContent }) => {
                     </p>
 
                     <motion.a
-                        href={content.cta.buttonUrl || '#contact'}
+                        href={content.cta.buttonUrl || '/#contact'}
                         target="_blank"
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.05 }}

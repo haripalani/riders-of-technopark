@@ -1,5 +1,20 @@
 import mongoose from 'mongoose';
 
+const RideSchema = new mongoose.Schema({
+    id: Number,
+    title: String,
+    location: String,
+    date: String,
+    image: String,
+    type: String
+}, { _id: false });
+
+const QuestionSchema = new mongoose.Schema({
+    id: Number,
+    question: String,
+    answer: String
+}, { _id: false });
+
 const ContentSchema = new mongoose.Schema({
     hero: {
         backgroundImage: String,
@@ -26,22 +41,11 @@ const ContentSchema = new mongoose.Schema({
             icon: String
         }]
     },
-    rides: [{
-        id: Number,
-        title: String,
-        location: String,
-        date: String,
-        image: String,
-        type: String
-    }],
+    rides: [RideSchema],
     faq: {
         title: String,
         subtitle: String,
-        questions: [{
-            id: Number,
-            question: String,
-            answer: String
-        }]
+        questions: [QuestionSchema]
     },
     cta: {
         backgroundImage: String,
@@ -67,4 +71,9 @@ const ContentSchema = new mongoose.Schema({
     }
 }, { timestamps: true, strict: false });
 
-export default mongoose.models.Content || mongoose.model('Content', ContentSchema);
+// Force refresh of the model to avoid stale schemas in HMR
+if (mongoose.models.Content) {
+    delete mongoose.models.Content;
+}
+
+export default mongoose.model('Content', ContentSchema);

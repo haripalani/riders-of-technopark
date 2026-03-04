@@ -28,9 +28,15 @@ export async function POST(request) {
         await dbConnect();
         const body = await request.json();
 
+        // Remove immutable fields to prevent errors when updating
+        if (body._id) delete body._id;
+        if (body.createdAt) delete body.createdAt;
+        if (body.updatedAt) delete body.updatedAt;
+        if (body.__v !== undefined) delete body.__v;
+
         const content = await Content.findOneAndUpdate({}, body, {
             upsert: true,
-            new: true
+            returnDocument: 'after'
         });
 
         return NextResponse.json(content);

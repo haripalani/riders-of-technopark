@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 import { loadContent } from '../data/content';
 
 const Hero = ({ content: initialContent }) => {
@@ -98,22 +99,26 @@ const Hero = ({ content: initialContent }) => {
                         transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
                         className="flex flex-col sm:flex-row gap-6 justify-center"
                     >
-                        <motion.button
-                            whileHover={{ scale: 1.05, backgroundColor: '#b91c1c' }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                            className="bg-white text-black px-10 py-4 text-sm font-black uppercase tracking-[0.2em] hover:bg-rot-red hover:text-white transition-all duration-300 ease-out border-2 border-white"
-                        >
-                            JOIN THE CLUB
-                        </motion.button>
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                            className="border-2 border-white text-white px-10 py-4 text-sm font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 ease-out"
-                        >
-                            EXPLORE MORE
-                        </motion.button>
+                        <Link href="/rides">
+                            <motion.button
+                                whileHover={{ scale: 1.05, backgroundColor: '#b91c1c' }}
+                                whileTap={{ scale: 0.95 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                className="bg-white text-black px-10 py-4 text-sm font-black uppercase tracking-[0.2em] hover:bg-rot-red hover:text-white transition-all duration-300 ease-out border-2 border-white w-full sm:w-auto"
+                            >
+                                JOIN THE CLUB
+                            </motion.button>
+                        </Link>
+                        <Link href="/#about">
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                className="border-2 border-white text-white px-10 py-4 text-sm font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 ease-out w-full sm:w-auto"
+                            >
+                                EXPLORE MORE
+                            </motion.button>
+                        </Link>
                     </motion.div>
                 </motion.div>
             </div>

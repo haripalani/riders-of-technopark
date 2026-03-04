@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Save, Image, X, Plus } from 'lucide-react';
+import { Save, Image, X, Plus, Lock, LogIn } from 'lucide-react';
 import { loadContent, saveContent, siteContent, fetchLiveContent, saveLiveContent } from '../../data/content';
 import ImageUploader from '../../components/ImageUploader';
 
@@ -223,80 +223,120 @@ const Admin = () => {
 
     if (!isAuthenticated) {
         return (
-            <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-4">
+            <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4 relative overflow-hidden">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-5">
+                    <div className="absolute inset-0" style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+                    }} />
+                </div>
+
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="w-full max-w-md bg-zinc-900 border border-zinc-800 p-8"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative z-10 w-full max-w-md"
                 >
-                    <div className="text-center mb-8">
-                        <h1 className="text-3xl font-black uppercase text-white distressed mb-2">
-                            <span className="text-rot-red">ADMIN</span> LOGIN
-                        </h1>
-                        <p className="text-gray-400 text-sm tracking-widest uppercase">Restricted Access</p>
+                    <div className="bg-zinc-900 border-2 border-rot-red p-8 shadow-2xl relative">
+                        {/* Corner accents */}
+                        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-rot-red/50" />
+                        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-rot-red/50" />
+
+                        <div className="text-center mb-8">
+                            <div className="inline-flex items-center justify-center w-16 h-16 bg-rot-red/10 border-2 border-rot-red rounded-full mb-4">
+                                <Lock className="w-8 h-8 text-rot-red" />
+                            </div>
+                            <h1 className="text-3xl font-black uppercase text-white mb-2 tracking-tighter distressed">Admin Login</h1>
+                            <p className="text-gray-400 text-xs uppercase tracking-[0.2em]">R.O.T Content Management System</p>
+                        </div>
+
+                        <form onSubmit={handleLogin} className="space-y-6">
+                            {loginError && (
+                                <motion.div
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="bg-red-500/10 border-l-4 border-red-500 text-red-500 p-3 text-xs uppercase font-bold tracking-wider"
+                                >
+                                    {loginError}
+                                </motion.div>
+                            )}
+
+                            <div>
+                                <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-gray-500">
+                                    Admin User
+                                </label>
+                                <input
+                                    type="text"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    placeholder="Enter username"
+                                    className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300 placeholder:text-zinc-700"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-gray-500">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="Enter password"
+                                    className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300 placeholder:text-zinc-700"
+                                    required
+                                />
+                            </div>
+
+                            <motion.button
+                                whileHover={{ scale: 1.02, backgroundColor: '#b91c1c' }}
+                                whileTap={{ scale: 0.98 }}
+                                type="submit"
+                                className="w-full bg-rot-red text-white px-6 py-4 flex items-center justify-center gap-3 text-sm font-black uppercase tracking-[0.2em] transition-all duration-300 shadow-lg shadow-rot-red/20"
+                            >
+                                <LogIn size={18} />
+                                Login to Admin Panel
+                            </motion.button>
+                        </form>
+
+                        <div className="mt-8 pt-6 border-t border-zinc-800 text-center">
+                            <p className="text-gray-600 text-[10px] uppercase tracking-widest font-bold">
+                                Riders of Technopark
+                            </p>
+                        </div>
                     </div>
 
-                    <form onSubmit={handleLogin} className="space-y-6">
-                        {loginError && (
-                            <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-3 text-sm text-center">
-                                {loginError}
-                            </div>
-                        )}
-
-                        <div>
-                            <label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">
-                                Username
-                            </label>
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-colors"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-colors"
-                                required
-                            />
-                        </div>
-
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            type="submit"
-                            className="w-full bg-rot-red hover:bg-red-800 text-white font-black uppercase tracking-widest py-4 transition-colors duration-300"
-                        >
-                            ACCESS PANEL
-                        </motion.button>
-                    </form>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                        className="mt-6 text-center"
+                    >
+                        <p className="text-gray-600 text-xs tracking-wider">
+                            🔒 Unauthorized access is prohibited
+                        </p>
+                    </motion.div>
                 </motion.div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-zinc-950 text-white p-8">
+        <div className="min-h-screen bg-zinc-950 text-white p-4 md:p-8">
             <div className="max-w-6xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
                     <div>
-                        <h1 className="text-4xl font-black uppercase mb-2">R.O.T Admin Panel</h1>
-                        <p className="text-gray-400">Manage your site content</p>
+                        <h1 className="text-4xl font-black uppercase mb-2 tracking-tighter distressed">R.O.T Admin Panel</h1>
+                        <p className="text-gray-400 text-xs uppercase tracking-widest">Manage your brotherhood's digital presence</p>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex flex-wrap gap-4">
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handleLogout}
-                            className="px-6 py-3 bg-zinc-900 border border-zinc-800 hover:border-rot-red transition-colors font-bold uppercase tracking-wider text-sm"
+                            className="px-6 py-3 bg-zinc-900 border border-zinc-800 hover:border-rot-red transition-all duration-300 font-bold uppercase tracking-wider text-sm"
                         >
                             Logout
                         </motion.button>
@@ -304,219 +344,478 @@ const Admin = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handleReset}
-                            className="px-6 py-3 bg-zinc-800 hover:bg-zinc-700 transition-colors font-bold uppercase tracking-wider text-sm"
+                            className="px-6 py-3 bg-zinc-800 hover:bg-zinc-700 transition-all duration-300 font-bold uppercase tracking-wider text-sm"
                         >
-                            Reset to Defaults
+                            Reset Defaults
                         </motion.button>
                         <motion.button
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.05, backgroundColor: '#b91c1c' }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handleSave}
                             disabled={isSaving}
-                            className={`px-6 py-3 bg-rot-red hover:bg-red-800 transition-colors font-bold uppercase tracking-wider text-sm flex items-center gap-2 ${isSaving ? 'opacity-50 cursor-wait' : ''}`}
+                            className={`px-6 py-3 bg-rot-red transition-all duration-300 font-black uppercase tracking-widest text-sm flex items-center gap-2 shadow-lg shadow-rot-red/20 ${isSaving ? 'opacity-50 cursor-wait' : ''}`}
                         >
                             <Save size={18} />
-                            {isSaving ? 'Saving...' : (saved ? 'Saved!' : 'Save Changes')}
+                            {isSaving ? 'Saving...' : (saved ? 'Changes Saved!' : 'Save Changes')}
                         </motion.button>
                     </div>
                 </div>
 
-                <div className="flex gap-4 mb-8 border-b border-zinc-800 overflow-x-auto">
+                {/* Tabs Navigation */}
+                <div className="flex gap-2 mb-8 border-b border-zinc-900 overflow-x-auto pb-px scrollbar-hide">
                     {['hero', 'about', 'features', 'rides', 'faq', 'cta', 'footer'].map(tab => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className={`px-6 py-3 font-bold uppercase tracking-wider text-sm transition-colors whitespace-nowrap ${activeTab === tab
-                                ? 'border-b-2 border-rot-red text-white'
-                                : 'text-gray-500 hover:text-white'
+                            className={`px-6 py-4 font-black uppercase tracking-widest text-xs transition-all duration-300 relative ${activeTab === tab
+                                ? 'text-rot-red'
+                                : 'text-gray-500 hover:text-gray-300'
                                 }`}
                         >
                             {tab}
+                            {activeTab === tab && (
+                                <motion.div
+                                    layoutId="activeTab"
+                                    className="absolute bottom-0 left-0 right-0 h-1 bg-rot-red"
+                                />
+                            )}
                         </button>
                     ))}
                 </div>
 
-                {activeTab === 'hero' && (
-                    <div className="space-y-6">
-                        <ImageUploader
-                            label="Background Image"
-                            value={content.hero.backgroundImage}
-                            onChange={(value) => updateHero('backgroundImage', value)}
-                            previewHeight="h-48"
-                        />
-                        <div>
-                            <label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Tagline</label>
-                            <input
-                                type="text"
-                                value={content.hero.tagline}
-                                onChange={(e) => updateHero('tagline', e.target.value)}
-                                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Main Title</label>
-                            <textarea
-                                value={content.hero.title}
-                                onChange={(e) => updateHero('title', e.target.value)}
-                                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none"
-                                rows={2}
-                            />
-                            <p className="text-xs text-gray-500 mt-1">Use a new line or space to break the title into two lines.</p>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Subtitle</label>
-                            <input
-                                type="text"
-                                value={content.hero.subtitle}
-                                onChange={(e) => updateHero('subtitle', e.target.value)}
-                                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none"
-                            />
-                        </div>
-                    </div>
-                )}
+                {/* Content Area - Table Based */}
+                <div className="bg-zinc-900/50 border border-zinc-900 overflow-hidden">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="bg-zinc-900 border-b border-zinc-800">
+                            <tr>
+                                <th className="px-6 py-4 text-xs font-black uppercase tracking-[0.2em] text-gray-500 w-1/4">Field / Property</th>
+                                <th className="px-6 py-4 text-xs font-black uppercase tracking-[0.2em] text-gray-500">Value / Content</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-zinc-900">
+                            {activeTab === 'hero' && (
+                                <>
+                                    <tr>
+                                        <td className="px-6 py-8 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Hero Image</span>
+                                            <p className="text-[10px] text-gray-600 mt-1 uppercase tracking-widest">Main background</p>
+                                        </td>
+                                        <td className="px-6 py-6 transition-all duration-500">
+                                            <ImageUploader
+                                                value={content.hero.backgroundImage}
+                                                onChange={(value) => updateHero('backgroundImage', value)}
+                                                previewHeight="h-48"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-6 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Tagline</span>
+                                        </td>
+                                        <td className="px-6 py-6">
+                                            <input
+                                                type="text"
+                                                value={content.hero.tagline}
+                                                onChange={(e) => updateHero('tagline', e.target.value)}
+                                                className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-6 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Main Title</span>
+                                            <p className="text-[10px] text-gray-600 mt-1 uppercase tracking-widest">Use multiline if needed</p>
+                                        </td>
+                                        <td className="px-6 py-6">
+                                            <textarea
+                                                value={content.hero.title}
+                                                onChange={(e) => updateHero('title', e.target.value)}
+                                                className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300 min-h-[100px]"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-6 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Subtitle</span>
+                                        </td>
+                                        <td className="px-6 py-6">
+                                            <input
+                                                type="text"
+                                                value={content.hero.subtitle}
+                                                onChange={(e) => updateHero('subtitle', e.target.value)}
+                                                className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300"
+                                            />
+                                        </td>
+                                    </tr>
+                                </>
+                            )}
 
-                {activeTab === 'about' && (
-                    <div className="space-y-6">
-                        <ImageUploader
-                            label="Riders Group Image"
-                            value={content.about.ridersImage}
-                            onChange={(value) => updateAbout('ridersImage', value)}
-                            previewHeight="h-64"
-                        />
-                        <div>
-                            <label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Section Title</label>
-                            <input
-                                type="text"
-                                value={content.about.title}
-                                onChange={(e) => updateAbout('title', e.target.value)}
-                                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Description Paragraph 1</label>
-                            <textarea
-                                value={content.about.description1}
-                                onChange={(e) => updateAbout('description1', e.target.value)}
-                                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none"
-                                rows={4}
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Description Paragraph 2</label>
-                            <textarea
-                                value={content.about.description2}
-                                onChange={(e) => updateAbout('description2', e.target.value)}
-                                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none"
-                                rows={4}
-                            />
-                        </div>
-                    </div>
-                )}
+                            {activeTab === 'about' && (
+                                <>
+                                    <tr>
+                                        <td className="px-6 py-8 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Group Photo</span>
+                                            <p className="text-[10px] text-gray-600 mt-1 uppercase tracking-widest">About section image</p>
+                                        </td>
+                                        <td className="px-6 py-6">
+                                            <ImageUploader
+                                                value={content.about.ridersImage}
+                                                onChange={(value) => updateAbout('ridersImage', value)}
+                                                previewHeight="h-64"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-6 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Section Title</span>
+                                        </td>
+                                        <td className="px-6 py-6">
+                                            <input
+                                                type="text"
+                                                value={content.about.title}
+                                                onChange={(e) => updateAbout('title', e.target.value)}
+                                                className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-6 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Story Para 1</span>
+                                        </td>
+                                        <td className="px-6 py-6">
+                                            <textarea
+                                                value={content.about.description1}
+                                                onChange={(e) => updateAbout('description1', e.target.value)}
+                                                className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300 min-h-[120px]"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-6 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Story Para 2</span>
+                                        </td>
+                                        <td className="px-6 py-6">
+                                            <textarea
+                                                value={content.about.description2}
+                                                onChange={(e) => updateAbout('description2', e.target.value)}
+                                                className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300 min-h-[120px]"
+                                            />
+                                        </td>
+                                    </tr>
+                                </>
+                            )}
 
-                {activeTab === 'rides' && (
-                    <div className="space-y-6">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-bold uppercase">Recent Rides</h3>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={addRide}
-                                className="px-4 py-2 bg-rot-red hover:bg-red-800 transition-colors font-bold uppercase tracking-wider text-sm flex items-center gap-2"
-                            >
-                                <Plus size={18} /> Add Ride
-                            </motion.button>
-                        </div>
-                        <div className="grid gap-6">
-                            {content.rides.map(ride => (
-                                <div key={ride.id} className="bg-zinc-900 p-6 border border-zinc-800 relative">
-                                    <button onClick={() => deleteRide(ride.id)} className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors"><X size={20} /></button>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Title</label><input type="text" value={ride.title} onChange={(e) => updateRide(ride.id, 'title', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" /></div>
-                                        <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Location</label><input type="text" value={ride.location} onChange={(e) => updateRide(ride.id, 'location', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" /></div>
-                                        <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Date</label><input type="text" value={ride.date} onChange={(e) => updateRide(ride.id, 'date', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" /></div>
-                                        <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Type</label><input type="text" value={ride.type} onChange={(e) => updateRide(ride.id, 'type', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" /></div>
-                                        <div className="col-span-2"><ImageUploader label="Ride Image" value={ride.image} onChange={(value) => updateRide(ride.id, 'image', value)} previewHeight="h-32" /></div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                            {activeTab === 'features' && (
+                                <>
+                                    <tr>
+                                        <td className="px-6 py-6 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Header Content</span>
+                                        </td>
+                                        <td className="px-6 py-6 space-y-4">
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Main Title</label>
+                                                <input
+                                                    type="text"
+                                                    value={content.features.title}
+                                                    onChange={(e) => updateFeatures('title', e.target.value)}
+                                                    className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300"
+                                                />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Subtitle</label>
+                                                <input
+                                                    type="text"
+                                                    value={content.features.subtitle}
+                                                    onChange={(e) => updateFeatures('subtitle', e.target.value)}
+                                                    className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300"
+                                                />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-6 py-6 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Core Values</span>
+                                            <p className="text-[10px] text-gray-600 mt-1 uppercase tracking-widest">Iconic pillars</p>
+                                        </td>
+                                        <td className="px-6 py-6">
+                                            <div className="space-y-4">
+                                                {content.features.values.map((value, idx) => (
+                                                    <div key={idx} className="bg-zinc-950/50 p-4 border border-zinc-900 group hover:border-rot-red/30 transition-all duration-300">
+                                                        <div className="flex gap-4">
+                                                            <div className="flex-1 space-y-3">
+                                                                <input
+                                                                    type="text"
+                                                                    value={value.title}
+                                                                    onChange={(e) => updateFeatureValue(idx, 'title', e.target.value)}
+                                                                    className="w-full bg-transparent border-b border-zinc-800 px-2 py-1 text-white font-bold uppercase tracking-wider focus:border-rot-red outline-none text-sm transition-all duration-300"
+                                                                />
+                                                                <textarea
+                                                                    value={value.desc}
+                                                                    onChange={(e) => updateFeatureValue(idx, 'desc', e.target.value)}
+                                                                    className="w-full bg-transparent border border-zinc-800 px-3 py-2 text-gray-400 focus:border-rot-red outline-none text-xs leading-relaxed transition-all duration-300 h-20"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </>
+                            )}
 
-                {activeTab === 'features' && (
-                    <div className="space-y-6">
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Section Title</label><input type="text" value={content.features.title} onChange={(e) => updateFeatures('title', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Subtitle</label><input type="text" value={content.features.subtitle} onChange={(e) => updateFeatures('subtitle', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                        <div className="space-y-4">
-                            <h3 className="text-xl font-bold uppercase">Values</h3>
-                            {content.features.values.map((value, idx) => (
-                                <div key={idx} className="bg-zinc-900 p-6 border border-zinc-800">
-                                    <div className="grid grid-cols-1 gap-4">
-                                        <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Title</label><input type="text" value={value.title} onChange={(e) => updateFeatureValue(idx, 'title', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" /></div>
-                                        <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Description</label><textarea value={value.desc} onChange={(e) => updateFeatureValue(idx, 'desc', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" rows={3} /></div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                            {activeTab === 'rides' && (
+                                <>
+                                    <tr>
+                                        <td colSpan="2" className="px-6 py-4 bg-zinc-900/30">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-xs font-black uppercase tracking-[0.2em] text-rot-red">Total Rides: {content.rides.length}</span>
+                                                <motion.button
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    onClick={addRide}
+                                                    className="px-4 py-2 bg-rot-red hover:bg-red-800 transition-all duration-300 font-bold uppercase tracking-widest text-[10px] flex items-center gap-2"
+                                                >
+                                                    <Plus size={14} /> Add New Ride
+                                                </motion.button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {content.rides.map((ride, idx) => (
+                                        <tr key={ride.id} className="group hover:bg-zinc-900/30 transition-all duration-300">
+                                            <td className="px-6 py-6 align-top">
+                                                <div className="flex items-center gap-4">
+                                                    <span className="text-lg font-black text-zinc-800">#{(idx + 1).toString().padStart(2, '0')}</span>
+                                                    <div>
+                                                        <span className="text-sm font-bold uppercase tracking-wider text-white block truncate max-w-[150px]">{ride.title}</span>
+                                                        <span className="text-[10px] text-gray-600 uppercase tracking-widest">{ride.type}</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-6">
+                                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                                    <div className="space-y-4">
+                                                        <div className="grid grid-cols-2 gap-4">
+                                                            <div className="space-y-1">
+                                                                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Ride Name</label>
+                                                                <input type="text" value={ride.title} onChange={(e) => updateRide(ride.id, 'title', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-xs transition-all duration-300" />
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Category</label>
+                                                                <input type="text" value={ride.type} onChange={(e) => updateRide(ride.id, 'type', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-xs transition-all duration-300" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="grid grid-cols-2 gap-4">
+                                                            <div className="space-y-1">
+                                                                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Location</label>
+                                                                <input type="text" value={ride.location} onChange={(e) => updateRide(ride.id, 'location', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-xs transition-all duration-300" />
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Date</label>
+                                                                <input type="text" value={ride.date} onChange={(e) => updateRide(ride.id, 'date', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-xs transition-all duration-300" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="pt-2">
+                                                            <button
+                                                                onClick={() => deleteRide(ride.id)}
+                                                                className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-red-500 transition-all duration-300"
+                                                            >
+                                                                <X size={12} /> Remove Ride Entry
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className="relative group/img">
+                                                        <ImageUploader
+                                                            value={ride.image}
+                                                            onChange={(value) => updateRide(ride.id, 'image', value)}
+                                                            previewHeight="h-32"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </>
+                            )}
 
-                {activeTab === 'faq' && (
-                    <div className="space-y-6">
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Section Title</label><input type="text" value={content.faq.title} onChange={(e) => updateFAQ('title', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Subtitle</label><input type="text" value={content.faq.subtitle} onChange={(e) => updateFAQ('subtitle', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                        <div className="flex justify-between items-center"><h3 className="text-xl font-bold uppercase">Questions</h3><motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={addQuestion} className="px-4 py-2 bg-rot-red hover:bg-red-800 transition-colors font-bold uppercase tracking-wider text-sm flex items-center gap-2"><Plus size={18} /> Add Question</motion.button></div>
-                        <div className="grid gap-6">
-                            {content.faq.questions.map(question => (
-                                <div key={question.id} className="bg-zinc-900 p-6 border border-zinc-800 relative">
-                                    <button onClick={() => deleteQuestion(question.id)} className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors"><X size={20} /></button>
-                                    <div className="grid gap-4 pr-8">
-                                        <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Question</label><input type="text" value={question.question} onChange={(e) => updateQuestion(question.id, 'question', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" /></div>
-                                        <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Answer</label><textarea value={question.answer} onChange={(e) => updateQuestion(question.id, 'answer', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" rows={4} /></div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                            {activeTab === 'faq' && (
+                                <>
+                                    <tr>
+                                        <td className="px-6 py-6 align-top">
+                                            <span className="text-sm font-bold uppercase tracking-wider text-gray-400">Section Headers</span>
+                                        </td>
+                                        <td className="px-6 py-6 space-y-4">
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Title</label>
+                                                <input
+                                                    type="text"
+                                                    value={content.faq.title}
+                                                    onChange={(e) => updateFAQ('title', e.target.value)}
+                                                    className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300"
+                                                />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Subtitle</label>
+                                                <input
+                                                    type="text"
+                                                    value={content.faq.subtitle}
+                                                    onChange={(e) => updateFAQ('subtitle', e.target.value)}
+                                                    className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none transition-all duration-300"
+                                                />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan="2" className="px-6 py-4 bg-zinc-900/30">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-xs font-black uppercase tracking-[0.2em] text-rot-red">Q&A Management</span>
+                                                <motion.button
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    onClick={addQuestion}
+                                                    className="px-4 py-2 bg-rot-red hover:bg-red-800 transition-all duration-300 font-bold uppercase tracking-widest text-[10px] flex items-center gap-2"
+                                                >
+                                                    <Plus size={14} /> Add FAQ Item
+                                                </motion.button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {content.faq.questions.map(question => (
+                                        <tr key={question.id} className="hover:bg-zinc-900/30 transition-all duration-300">
+                                            <td className="px-6 py-6 align-top">
+                                                <span className="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-2">Question ID: {question.id}</span>
+                                                <button
+                                                    onClick={() => deleteQuestion(question.id)}
+                                                    className="text-[10px] font-bold uppercase tracking-widest text-gray-700 hover:text-red-500 transition-all duration-300 flex items-center gap-1"
+                                                >
+                                                    <X size={10} /> Delete
+                                                </button>
+                                            </td>
+                                            <td className="px-6 py-6 space-y-4">
+                                                <div className="space-y-1">
+                                                    <label className="text-[10px] text-gray-600 uppercase tracking-widest font-black">Question</label>
+                                                    <input
+                                                        type="text"
+                                                        value={question.question}
+                                                        onChange={(e) => updateQuestion(question.id, 'question', e.target.value)}
+                                                        className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-white focus:border-rot-red outline-none text-sm transition-all duration-300"
+                                                    />
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <label className="text-[10px] text-gray-600 uppercase tracking-widest font-black">Answer</label>
+                                                    <textarea
+                                                        value={question.answer}
+                                                        onChange={(e) => updateQuestion(question.id, 'answer', e.target.value)}
+                                                        className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-gray-400 focus:border-rot-red outline-none text-xs transition-all duration-300 h-24"
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </>
+                            )}
 
-                {activeTab === 'cta' && (
-                    <div className="space-y-6">
-                        <ImageUploader label="Background Image" value={content.cta.backgroundImage} onChange={(value) => updateCTA('backgroundImage', value)} previewHeight="h-48" aspectRatio={16 / 9} />
-                        <div className="grid grid-cols-2 gap-4">
-                            <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Title (First Line)</label><input type="text" value={content.cta.title} onChange={(e) => updateCTA('title', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                            <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Title Accent (Second Line)</label><input type="text" value={content.cta.titleAccent} onChange={(e) => updateCTA('titleAccent', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                        </div>
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Subtitle</label><input type="text" value={content.cta.subtitle} onChange={(e) => updateCTA('subtitle', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Description</label><textarea value={content.cta.description} onChange={(e) => updateCTA('description', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" rows={3} /></div>
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Button Text</label><input type="text" value={content.cta.buttonText} onChange={(e) => updateCTA('buttonText', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Footer Text</label><input type="text" value={content.cta.footerText} onChange={(e) => updateCTA('footerText', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                    </div>
-                )}
+                            {(activeTab === 'cta' || activeTab === 'footer') && (
+                                <>
+                                    {activeTab === 'cta' && (
+                                        <>
+                                            <tr>
+                                                <td className="px-6 py-6 align-top"><span className="text-sm font-bold uppercase tracking-wider text-gray-400">Background</span></td>
+                                                <td className="px-6 py-6"><ImageUploader value={content.cta.backgroundImage} onChange={(value) => updateCTA('backgroundImage', value)} previewHeight="h-48" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="px-6 py-6 align-top"><span className="text-sm font-bold uppercase tracking-wider text-gray-400">Call to Action</span></td>
+                                                <td className="px-6 py-6 space-y-4">
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <div className="space-y-1">
+                                                            <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Main Heading</label>
+                                                            <input type="text" value={content.cta.title} onChange={(e) => updateCTA('title', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-white focus:border-rot-red outline-none text-sm" />
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Accent Word</label>
+                                                            <input type="text" value={content.cta.titleAccent} onChange={(e) => updateCTA('titleAccent', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-white font-black text-rot-red focus:border-rot-red outline-none text-sm" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Subtitle</label>
+                                                        <input type="text" value={content.cta.subtitle} onChange={(e) => updateCTA('subtitle', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-white focus:border-rot-red outline-none text-sm" />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Action Button & Meta</label>
+                                                        <div className="grid grid-cols-2 gap-4">
+                                                            <input type="text" value={content.cta.buttonText} onChange={(e) => updateCTA('buttonText', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-white focus:border-rot-red outline-none text-xs" placeholder="Button Text" />
+                                                            <input type="text" value={content.cta.footerText} onChange={(e) => updateCTA('footerText', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-white focus:border-rot-red outline-none text-xs" placeholder="Botton Link/Text" />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </>
+                                    )}
 
-                {activeTab === 'footer' && (
-                    <div className="space-y-6">
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Tagline</label><input type="text" value={content.footer.tagline} onChange={(e) => updateFooter('tagline', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                        <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Description</label><textarea value={content.footer.description} onChange={(e) => updateFooter('description', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" rows={3} /></div>
-                        <div className="grid grid-cols-3 gap-4">
-                            <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Location</label><input type="text" value={content.footer.location} onChange={(e) => updateFooter('location', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                            <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">City</label><input type="text" value={content.footer.city} onChange={(e) => updateFooter('city', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                            <div><label className="block text-sm font-bold uppercase tracking-wider mb-2 text-gray-400">Schedule</label><input type="text" value={content.footer.schedule} onChange={(e) => updateFooter('schedule', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none" /></div>
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-bold uppercase mb-4">Social Links</h3>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Instagram URL</label><input type="text" value={content.footer.socialLinks.instagram} onChange={(e) => updateSocialLink('instagram', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" /></div>
-                                <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Facebook URL</label><input type="text" value={content.footer.socialLinks.facebook} onChange={(e) => updateSocialLink('facebook', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" /></div>
-                                <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Email</label><input type="text" value={content.footer.socialLinks.email} onChange={(e) => updateSocialLink('email', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" placeholder="mailto:info@example.com" /></div>
-                                <div><label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Phone</label><input type="text" value={content.footer.socialLinks.phone} onChange={(e) => updateSocialLink('phone', e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 px-3 py-2 text-white focus:border-rot-red outline-none text-sm" placeholder="tel:+91xxxxxxxxxx" /></div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                                    {activeTab === 'footer' && (
+                                        <>
+                                            <tr>
+                                                <td className="px-6 py-6 align-top"><span className="text-sm font-bold uppercase tracking-wider text-gray-400">Footer Tagline</span></td>
+                                                <td className="px-6 py-6"><input type="text" value={content.footer.tagline} onChange={(e) => updateFooter('tagline', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-white focus:border-rot-red outline-none text-sm" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="px-6 py-6 align-top"><span className="text-sm font-bold uppercase tracking-wider text-gray-400">About Brief</span></td>
+                                                <td className="px-6 py-6"><textarea value={content.footer.description} onChange={(e) => updateFooter('description', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-3 text-gray-400 focus:border-rot-red outline-none text-xs h-24" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="px-6 py-6 align-top"><span className="text-sm font-bold uppercase tracking-wider text-gray-400">Location Details</span></td>
+                                                <td className="px-6 py-6">
+                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                        <div className="space-y-1">
+                                                            <label className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">Venue</label>
+                                                            <input type="text" value={content.footer.location} onChange={(e) => updateFooter('location', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-white focus:border-rot-red outline-none text-xs" />
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <label className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">City</label>
+                                                            <input type="text" value={content.footer.city} onChange={(e) => updateFooter('city', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-white focus:border-rot-red outline-none text-xs" />
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <label className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">Schedule</label>
+                                                            <input type="text" value={content.footer.schedule} onChange={(e) => updateFooter('schedule', e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-rot-red font-black focus:border-rot-red outline-none text-xs" />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="px-6 py-6 align-top"><span className="text-sm font-bold uppercase tracking-wider text-gray-400">Connectivity</span></td>
+                                                <td className="px-6 py-6">
+                                                    <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                                                        {Object.entries(content.footer.socialLinks).map(([platform, url]) => (
+                                                            <div key={platform} className="space-y-1">
+                                                                <label className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">{platform}</label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={url}
+                                                                    onChange={(e) => updateSocialLink(platform, e.target.value)}
+                                                                    className="w-full bg-zinc-950 border border-zinc-800 px-4 py-2 text-white/70 focus:border-rot-red outline-none text-[11px] transition-all duration-300"
+                                                                />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </>
+                                    )}
+                                </>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Status Bar */}
+                <div className="mt-8 flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.3em] text-gray-700">
+                    <span>System Online // V1.2.0</span>
+                    <span className="text-rot-red">Authorized Entry Only</span>
+                </div>
             </div>
         </div >
     );
+
 };
 
 export default Admin;

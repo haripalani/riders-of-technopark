@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import Link from 'next/link';
 import { loadContent } from '../data/content';
 
 const FAQ = ({ content: initialContent }) => {
@@ -115,15 +116,12 @@ const FAQ = ({ content: initialContent }) => {
                     <p className="text-gray-400 mb-6">
                         Still have questions? We'd love to hear from you.
                     </p>
-                    <motion.a
-                        href="#contact"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    <Link
+                        href="/#contact"
                         className="inline-block bg-rot-red text-white px-8 py-3 text-sm font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 ease-out border-2 border-rot-red"
                     >
                         Get in Touch
-                    </motion.a>
+                    </Link>
                 </motion.div>
             </div>
         </section>

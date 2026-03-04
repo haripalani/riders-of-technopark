@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Mail, MessageCircle } from 'lucide-react';
+import Link from 'next/link';
 import { loadContent } from '../data/content';
 
 const Footer = ({ content: initialContent }) => {
@@ -25,10 +26,10 @@ const Footer = ({ content: initialContent }) => {
     ];
 
     const quickLinks = [
-        { name: 'About Us', href: '#about' },
-        { name: 'Events', href: '#events' },
-        { name: 'Gallery', href: '#gallery' },
-        { name: 'Contact', href: '#contact' },
+        { name: 'About Us', href: '/#about' },
+        { name: 'Events', href: '/#events' },
+        { name: 'Gallery', href: '/#gallery' },
+        { name: 'Contact', href: '/#contact' },
     ];
 
     return (
@@ -79,14 +80,12 @@ const Footer = ({ content: initialContent }) => {
                         <ul className="space-y-3 font-sans">
                             {quickLinks.map((link, idx) => (
                                 <li key={idx}>
-                                    <motion.a
+                                    <Link
                                         href={link.href}
-                                        whileHover={{ x: 5, color: '#dc2626' }}
-                                        transition={{ type: "spring", stiffness: 400, damping: 20 }}
                                         className="text-gray-400 hover:text-rot-red transition-colors duration-300 ease-out text-sm"
                                     >
                                         {link.name}
-                                    </motion.a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
