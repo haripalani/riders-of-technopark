@@ -31,7 +31,7 @@ const Hero = ({ content: initialContent }) => {
                     src={content.hero.backgroundImage}
                     alt="Riders of Technopark - Kerala's Premier Tech Biking Brotherhood"
                     className="w-full h-full object-cover grayscale"
-                    fetchpriority="high"
+                    fetchPriority="high"
                 />
             </div>
 
