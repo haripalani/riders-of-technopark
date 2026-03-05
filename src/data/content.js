@@ -12,9 +12,9 @@ export const siteContent = {
         description1: "R.O.T (Riders of Technopark) isn't just another weekend riding group. We're a disciplined community of IT professionals who found something more powerful than algorithms and deadlines the raw freedom of the open road.",
         description2: "What started as casual Sunday rides has evolved into a structured brotherhood. We plan like engineers, ride like warriors, and build bonds that last beyond the highway.",
         stats: [
-            { label: "COMMUNITY", value: "300+ MEMBERS" },
-            { label: "FOLLOWERS", value: "1K+ INSTAGRAM" },
-            { label: "PASSION", value: "PURE ADRENALINE" }
+            { label: "Community", value: "Inclusive Brotherhood" },
+            { label: "Safety", value: "Verified Riders" },
+            { label: "Passion", value: "Pure Adrenaline" }
         ],
         story: [
             {
@@ -271,7 +271,7 @@ export const siteContent = {
         subtitle: "Join our brotherhood of riders and experience the thrill of the open road",
         description: "Whether you're a seasoned rider or just starting your journey, there's a place for you in R.O.T.",
         buttonText: "Join The Ride",
-        buttonUrl: "https://chat.whatsapp.com/ExQQpOF8Kun2HwdIHDVoN1",
+        buttonUrl: "/join",
         footerText: "Ride. Respect. Brotherhood."
     },
     footer: {
@@ -283,7 +283,7 @@ export const siteContent = {
         socialLinks: {
             instagram: "https://www.instagram.com/ridersoftechnopark/",
             facebook: "#",
-            whatsapp: "https://chat.whatsapp.com/ExQQpOF8Kun2HwdIHDVoN1",
+            whatsapp: "https://chat.whatsapp.com/G5iEa3nLpGf5m7kGj8vL",
             email: "mailto:ridersoftechnopark@gmail.com",
             phone: "tel:+917012230578"
         }

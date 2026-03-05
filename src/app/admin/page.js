@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Save, Image, X, Plus, Lock, LogIn } from 'lucide-react';
+import { Save, Image, X, Plus, Lock, LogIn, Download, ChevronLeft, ChevronRight, Trash2, CheckCircle, Clock } from 'lucide-react';
 import { loadContent, saveContent, siteContent, fetchLiveContent, saveLiveContent } from '../../data/content';
 import ImageUploader from '../../components/ImageUploader';
 
@@ -11,6 +11,11 @@ const Admin = () => {
     const [activeTab, setActiveTab] = useState('hero');
     const [saved, setSaved] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+
+    // Registration Management State
+    const [registrations, setRegistrations] = useState([]);
+    const [regPagination, setRegPagination] = useState({ currentPage: 1, totalPages: 1 });
+    const [isRegLoading, setIsRegLoading] = useState(false);
 
     // Authentication State
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,12 +31,104 @@ const Admin = () => {
         };
         load();
 
+        if (isAuthenticated) {
+            fetchRegistrations(1);
+        }
+
         // Check local storage for auth state to persist login
         const auth = sessionStorage.getItem('rotAdminAuth');
         if (auth === 'true') {
             setIsAuthenticated(true);
         }
-    }, []);
+    }, [isAuthenticated]);
+
+    const fetchRegistrations = async (page = 1) => {
+        setIsRegLoading(true);
+        try {
+            const response = await fetch(`/api/admin/registrations?page=${page}&limit=10`);
+            const data = await response.json();
+            setRegistrations(data.registrations);
+            setRegPagination({
+                currentPage: data.pagination.currentPage,
+                totalPages: data.pagination.pages
+            });
+        } catch (error) {
+            console.error('Fetch Registrations Error:', error);
+        } finally {
+            setIsRegLoading(false);
+        }
+    };
+
+    const updateRegistrationStatus = async (id, status) => {
+        try {
+            const response = await fetch('/api/admin/registrations', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, status })
+            });
+            if (response.ok) {
+                fetchRegistrations(regPagination.currentPage);
+            }
+        } catch (error) {
+            alert('Failed to update status');
+        }
+    };
+
+    const deleteRegistration = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this registration?')) return;
+        try {
+            const response = await fetch(`/api/admin/registrations?id=${id}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                fetchRegistrations(regPagination.currentPage);
+            }
+        } catch (error) {
+            alert('Failed to delete');
+        }
+    };
+
+    const exportToCSV = async () => {
+        try {
+            const response = await fetch('/api/admin/registrations?export=true');
+            const data = await response.json();
+
+            // CSV Header
+            let csvContent = "Name,DOB,Blood Group,Company,Designation,Phone,Emergency Name,Emergency Phone,Motorcycle,Experience,Instagram,Status,Applied At\n";
+
+            // CSV Rows
+            data.forEach(reg => {
+                const row = [
+                    `"${reg.name}"`,
+                    `"${new Date(reg.dob).toLocaleDateString()}"`,
+                    `"${reg.bloodGroup}"`,
+                    `"${reg.company}"`,
+                    `"${reg.designation}"`,
+                    `"${reg.phone}"`,
+                    `"${reg.emergencyContact.name}"`,
+                    `"${reg.emergencyContact.phone}"`,
+                    `"${reg.motorcycle}"`,
+                    `"${reg.experience.replace(/\n/g, ' ')}"`,
+                    `"${reg.instagram}"`,
+                    `"${reg.status}"`,
+                    `"${new Date(reg.createdAt).toLocaleString()}"`
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `ROT_Registrations_${new Date().toLocaleDateString()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            alert('Export failed');
+        }
+    };
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -406,7 +503,7 @@ const Admin = () => {
 
                 {/* Tabs Navigation */}
                 <div className="flex gap-2 mb-8 border-b border-zinc-900 overflow-x-auto pb-px scrollbar-hide">
-                    {['hero', 'about', 'features', 'rides', 'faq', 'cta', 'footer'].map(tab => (
+                    {['hero', 'about', 'features', 'rides', 'faq', 'cta', 'footer', 'registrations'].map(tab => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
@@ -987,6 +1084,139 @@ const Admin = () => {
                                         </>
                                     )}
                                 </>
+                            )}
+                            {activeTab === 'registrations' && (
+                                <tr>
+                                    <td colSpan="2" className="p-0">
+                                        <div className="p-6 bg-zinc-900/10 border-b border-zinc-800 flex justify-between items-center">
+                                            <div className="flex items-center gap-4">
+                                                <h3 className="text-sm font-black uppercase tracking-[0.2em] text-rot-red">New Applicants</h3>
+                                                <span className="text-[10px] bg-zinc-800 text-gray-400 px-2 py-1 rounded">Page {regPagination.currentPage} of {regPagination.totalPages}</span>
+                                            </div>
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={exportToCSV}
+                                                className="px-4 py-2 bg-green-600 hover:bg-green-700 transition-all duration-300 font-bold uppercase tracking-widest text-[10px] flex items-center gap-2"
+                                            >
+                                                <Download size={14} /> Export to Excel
+                                            </motion.button>
+                                        </div>
+
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-xs text-left border-collapse">
+                                                <thead className="bg-zinc-950 text-gray-500 uppercase font-black tracking-widest text-[10px] border-b border-zinc-900">
+                                                    <tr>
+                                                        <th className="px-4 py-3">Rider/Company</th>
+                                                        <th className="px-4 py-3">Safety/Contact</th>
+                                                        <th className="px-4 py-3">Bike/Experience</th>
+                                                        <th className="px-4 py-3 text-right">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-zinc-900">
+                                                    {isRegLoading ? (
+                                                        <tr>
+                                                            <td colSpan="4" className="px-6 py-20 text-center text-gray-600 uppercase tracking-widest animate-pulse">Loading registrations...</td>
+                                                        </tr>
+                                                    ) : registrations.length === 0 ? (
+                                                        <tr>
+                                                            <td colSpan="4" className="px-6 py-20 text-center text-gray-600 uppercase tracking-widest">No registrations found</td>
+                                                        </tr>
+                                                    ) : (
+                                                        registrations.map(reg => (
+                                                            <tr key={reg._id} className="hover:bg-zinc-900/40 transition-all group">
+                                                                <td className="px-4 py-4 align-top">
+                                                                    <div className="font-bold text-white uppercase">{reg.name}</div>
+                                                                    <div className="text-[10px] text-gray-500 mt-0.5">{reg.designation} @ {reg.company}</div>
+                                                                    <div className="text-[10px] text-zinc-600 mt-2">Applied: {new Date(reg.createdAt).toLocaleDateString()}</div>
+                                                                </td>
+                                                                <td className="px-4 py-4 align-top">
+                                                                    <div className="flex items-center gap-2 text-zinc-300">
+                                                                        <Phone size={10} className="text-rot-red" /> {reg.phone}
+                                                                    </div>
+                                                                    <div className="flex items-center gap-2 text-[10px] text-gray-500 mt-1">
+                                                                        <Droplets size={10} className="text-red-800" /> {reg.bloodGroup}
+                                                                        <span className="mx-1 text-zinc-800">|</span>
+                                                                        <Calendar size={10} /> {new Date(reg.dob).toLocaleDateString()}
+                                                                    </div>
+                                                                    <div className="text-[9px] text-zinc-600 mt-1">EMG: {reg.emergencyContact.name} ({reg.emergencyContact.phone})</div>
+                                                                </td>
+                                                                <td className="px-4 py-4 align-top max-w-xs">
+                                                                    <div className="flex items-center gap-2 text-zinc-300 uppercase font-bold">
+                                                                        <Bike size={12} className="text-rot-red" /> {reg.motorcycle}
+                                                                    </div>
+                                                                    <div className="text-[10px] text-gray-500 mt-1 italic line-clamp-2" title={reg.experience}>
+                                                                        "{reg.experience}"
+                                                                    </div>
+                                                                    {reg.instagram && (
+                                                                        <div className="flex items-center gap-1.5 text-[10px] text-rot-red mt-1">
+                                                                            <Instagram size={10} /> {reg.instagram}
+                                                                        </div>
+                                                                    )}
+                                                                </td>
+                                                                <td className="px-4 py-4 align-top text-right">
+                                                                    <div className="flex flex-col items-end gap-2">
+                                                                        <div className="flex gap-1">
+                                                                            {reg.status === 'pending' && (
+                                                                                <button
+                                                                                    onClick={() => updateRegistrationStatus(reg._id, 'contacted')}
+                                                                                    className="p-1.5 bg-zinc-800 hover:bg-blue-900 text-blue-400 rounded transition-colors"
+                                                                                    title="Mark as Contacted"
+                                                                                >
+                                                                                    <Clock size={14} />
+                                                                                </button>
+                                                                            )}
+                                                                            <button
+                                                                                onClick={() => updateRegistrationStatus(reg._id, reg.status === 'joined' ? 'pending' : 'joined')}
+                                                                                className={`p-1.5 ${reg.status === 'joined' ? 'bg-green-900/30 text-green-500' : 'bg-zinc-800 text-zinc-500'} hover:bg-green-600 hover:text-white rounded transition-colors`}
+                                                                                title={reg.status === 'joined' ? "Reset Status" : "Mark as Joined"}
+                                                                            >
+                                                                                <CheckCircle size={14} />
+                                                                            </button>
+                                                                            <button
+                                                                                onClick={() => deleteRegistration(reg._id)}
+                                                                                className="p-1.5 bg-zinc-800 hover:bg-red-900 text-red-400 rounded transition-colors"
+                                                                                title="Delete Application"
+                                                                            >
+                                                                                <Trash2 size={14} />
+                                                                            </button>
+                                                                        </div>
+                                                                        <span className={`text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${reg.status === 'joined' ? 'bg-green-600 text-white' :
+                                                                                reg.status === 'contacted' ? 'bg-blue-600 text-white' :
+                                                                                    'bg-rot-red text-white'
+                                                                            }`}>
+                                                                            {reg.status}
+                                                                        </span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div className="p-4 bg-zinc-950 border-t border-zinc-900 flex justify-center items-center gap-4">
+                                            <button
+                                                disabled={regPagination.currentPage === 1 || isRegLoading}
+                                                onClick={() => fetchRegistrations(regPagination.currentPage - 1)}
+                                                className="p-2 border border-zinc-800 hover:border-rot-red disabled:opacity-30 disabled:hover:border-zinc-800 transition-all text-gray-400"
+                                            >
+                                                <ChevronLeft size={20} />
+                                            </button>
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-600">
+                                                Page {regPagination.currentPage} of {regPagination.totalPages}
+                                            </span>
+                                            <button
+                                                disabled={regPagination.currentPage === regPagination.totalPages || isRegLoading}
+                                                onClick={() => fetchRegistrations(regPagination.currentPage + 1)}
+                                                className="p-2 border border-zinc-800 hover:border-rot-red disabled:opacity-30 disabled:hover:border-zinc-800 transition-all text-gray-400"
+                                            >
+                                                <ChevronRight size={20} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
                             )}
                         </tbody>
                     </table>
