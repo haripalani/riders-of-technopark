@@ -102,10 +102,10 @@ const Hero = ({ content: initialContent }) => {
                     >
                         <Link href="#contact">
                             <motion.button
-                                whileHover={{ scale: 1.05, backgroundColor: '#b91c1c' }}
+                                whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                                className="bg-white text-black px-10 py-4 text-sm font-black uppercase tracking-[0.2em] hover:bg-rot-red hover:text-white transition-all duration-300 ease-out border-2 border-white w-full sm:w-auto"
+                                className="bg-rot-red text-white px-10 py-4 text-sm font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 ease-out border-2 border-rot-red hover:border-white w-full sm:w-auto"
                             >
                                 JOIN THE CLUB
                             </motion.button>

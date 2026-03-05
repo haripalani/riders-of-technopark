@@ -92,8 +92,8 @@ const Navbar = ({ content: initialContent }) => {
                                 <Link
                                     href={link.href}
                                     className={`${link.isButton
-                                            ? "bg-rot-red text-white px-6 py-2 border-2 border-rot-red hover:bg-transparent hover:text-rot-red transition-all duration-300"
-                                            : "text-white hover:text-rot-red transition-colors duration-300"
+                                        ? "bg-rot-red text-white px-6 py-2 border-2 border-rot-red hover:bg-white hover:text-black hover:border-white transition-all duration-300"
+                                        : "text-white hover:text-rot-red transition-colors duration-300"
                                         } text-sm font-bold tracking-widest whitespace-nowrap`}
                                 >
                                     {link.name}

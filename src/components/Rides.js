@@ -112,7 +112,7 @@ const Rides = ({ content: initialContent }) => {
                 <div className="mt-12 text-center md:hidden">
                     <Link
                         href="/rides"
-                        className="inline-flex items-center gap-2 text-white font-bold uppercase text-sm tracking-[0.2em] border-2 border-rot-red bg-rot-red/10 px-8 py-4 hover:bg-rot-red transition-all duration-300"
+                        className="inline-flex items-center gap-2 text-white font-bold uppercase text-sm tracking-[0.2em] border-2 border-rot-red bg-rot-red/10 px-8 py-4 hover:bg-white hover:text-black hover:border-white transition-all duration-300"
                     >
                         VIEW ALL RIDES <ChevronRight size={18} />
                     </Link>

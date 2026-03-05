@@ -107,6 +107,19 @@ body {
   border-color: #dc2626 !important;
 }
 
+/* Explicit white hover utilities to override rot-red */
+.hover\:bg-white:hover {
+  background-color: #ffffff !important;
+}
+
+.hover\:text-black:hover {
+  color: #000000 !important;
+}
+
+.hover\:border-white:hover {
+  border-color: #ffffff !important;
+}
+
 @keyframes marquee {
   0% {
     transform: translateX(0);

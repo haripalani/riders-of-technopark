@@ -107,7 +107,7 @@ const JoinPage = () => {
                         <a
                             href="https://chat.whatsapp.com/G5iEa3nLpGf5m7kGj8vL"
                             target="_blank"
-                            className="bg-rot-red hover:bg-red-800 text-white px-10 py-5 font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 shadow-xl"
+                            className="bg-rot-red hover:bg-white hover:text-black text-white px-10 py-5 font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 shadow-xl border border-transparent hover:border-white"
                         >
                             Join Community Chat <ChevronRight size={20} />
                         </a>
@@ -343,7 +343,7 @@ const JoinPage = () => {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`w-full bg-rot-red hover:bg-red-800 text-white py-6 font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3 shadow-2xl ${isSubmitting ? 'opacity-50 cursor-wait' : ''}`}
+                            className={`w-full bg-rot-red hover:bg-white hover:text-black text-white py-6 font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3 shadow-2xl border border-transparent hover:border-white ${isSubmitting ? 'opacity-50 cursor-wait' : ''}`}
                         >
                             {isSubmitting ? 'Submitting Application...' : (
                                 <>
