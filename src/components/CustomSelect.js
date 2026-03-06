@@ -31,7 +31,7 @@ const CustomSelect = ({ options, value, onChange, placeholder, label, icon: Icon
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`w-full bg-zinc-900/50 border ${isOpen ? 'border-rot-red' : 'border-zinc-800'} p-4 flex items-center justify-between transition-all duration-300 group h-[60px]`}
+                className={`w-full bg-zinc-900/50 border ${isOpen ? 'border-rot-red' : 'border-zinc-800'} p-4 flex items-center justify-between transition-all duration-300 group h-[60px] cursor-pointer`}
             >
                 <span className={`font-medium ${!value ? 'text-zinc-500' : 'text-white'}`}>
                     {value || placeholder}
@@ -60,7 +60,7 @@ const CustomSelect = ({ options, value, onChange, placeholder, label, icon: Icon
                                         onChange(option);
                                         setIsOpen(false);
                                     }}
-                                    className={`w-full text-left px-4 py-3 flex items-center justify-between transition-all hover:bg-zinc-800 font-medium ${value === option ? 'text-rot-red bg-rot-red/5' : 'text-zinc-400'
+                                    className={`w-full text-left px-4 py-3 flex items-center justify-between transition-all hover:bg-zinc-800 font-medium cursor-pointer ${value === option ? 'text-rot-red bg-rot-red/5' : 'text-zinc-400'
                                         }`}
                                 >
                                     <span>{option}</span>

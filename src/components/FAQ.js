@@ -67,7 +67,7 @@ const FAQ = ({ content: initialContent }) => {
                         >
                             <button
                                 onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-                                className="w-full px-6 py-5 flex items-center justify-between text-left group hover:bg-rot-red/5 transition-all duration-300 ease-out"
+                                className="w-full px-6 py-5 flex items-center justify-between text-left group hover:bg-rot-red/5 transition-all duration-300 ease-out cursor-pointer"
                             >
                                 <span className="text-white font-bold text-lg pr-4 group-hover:text-rot-red transition-colors duration-300 ease-out">
                                     {faq.question}

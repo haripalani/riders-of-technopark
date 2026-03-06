@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, MapPin, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import Cursor from './Cursor';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Preloader from './Preloader';
@@ -52,7 +51,6 @@ const RidesView = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1 }}
                 >
-                    <Cursor />
                     <Navbar content={content} />
 
                     <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -93,7 +91,7 @@ const RidesView = () => {
                                 <button
                                     key={type}
                                     onClick={() => setFilter(type)}
-                                    className={`px-6 py-2 text-xs font-black tracking-widest uppercase transition-all duration-300 border-2 ${filter === type
+                                    className={`px-6 py-2 text-xs font-black tracking-widest uppercase transition-all duration-300 border-2 cursor-pointer ${filter === type
                                         ? 'bg-rot-red border-rot-red text-white'
                                         : 'bg-transparent border-zinc-900 text-gray-500 hover:border-rot-red hover:text-white'
                                         }`}

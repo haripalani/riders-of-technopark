@@ -27,19 +27,6 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* Hide default cursor on devices that accept hover (desktop) so our custom cursor shows */
-@media (hover: hover) and (pointer: fine) {
-
-  body,
-  a,
-  button,
-  [role="button"],
-  input,
-  select,
-  textarea {
-    cursor: none !important;
-  }
-}
 
 /* Distressed text effect */
 .distressed {

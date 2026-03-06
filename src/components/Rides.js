@@ -1,13 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Calendar, MapPin, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useAnimation, useMotionValue } from 'framer-motion';
+import { Calendar, MapPin, ChevronRight, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { loadContent } from '../data/content';
 
 const Rides = ({ content: initialContent }) => {
     const [content, setContent] = useState(initialContent || loadContent());
+    const [dragConstraint, setDragConstraint] = useState(0);
+    const containerRef = useRef(null);
+    const carouselRef = useRef(null);
+    const x = useMotionValue(0);
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         if (initialContent) {
@@ -17,9 +22,63 @@ const Rides = ({ content: initialContent }) => {
         }
     }, [initialContent]);
 
+    useEffect(() => {
+        const updateConstraints = () => {
+            if (carouselRef.current && containerRef.current) {
+                // For infinite scroll, we duplicate the items. 
+                // We'll calculate constraint based on single set width
+                const singleSetWidth = carouselRef.current.scrollWidth / 2;
+                setDragConstraint(-singleSetWidth);
+            }
+        };
+
+        updateConstraints();
+        window.addEventListener('resize', updateConstraints);
+        return () => window.removeEventListener('resize', updateConstraints);
+    }, [content]);
+
+    // Auto-scroll animation logic
+    useEffect(() => {
+        let animationFrameId;
+
+        const animate = () => {
+            if (!isHovered && carouselRef.current) {
+                let currentX = x.get();
+                currentX -= 1; // Speed of auto-scroll
+
+                // Reset to beginning if we scrolled past the first set
+                if (currentX <= dragConstraint) {
+                    currentX = 0;
+                }
+
+                x.set(currentX);
+            }
+            animationFrameId = requestAnimationFrame(animate);
+        };
+
+        animationFrameId = requestAnimationFrame(animate);
+        return () => cancelAnimationFrame(animationFrameId);
+    }, [isHovered, dragConstraint, x]);
+
     if (!content) return null;
 
     const rides = content?.rides || [];
+
+    const handleScroll = (direction) => {
+        if (!carouselRef.current) return;
+        const scrollAmount = 400 + 24; // Card width + gap
+        let currentX = x.get();
+
+        if (direction === 'left') {
+            currentX += scrollAmount;
+            if (currentX > 0) currentX = dragConstraint + currentX;
+        } else {
+            currentX -= scrollAmount;
+            if (currentX < dragConstraint) currentX = currentX - dragConstraint;
+        }
+
+        x.set(currentX);
+    };
 
     return (
         <section id="gallery" className="py-32 bg-black">
@@ -48,66 +107,102 @@ const Rides = ({ content: initialContent }) => {
                     </Link>
                 </div>
 
-                {/* Infinite Slider Container */}
-                <div className="relative overflow-hidden mt-10 -mx-4 sm:-mx-6 lg:-mx-8 py-10 pause-on-hover">
-                    <div className="flex gap-6 w-max animate-marquee">
-                        {/* Duplicate sets for seamless loop */}
-                        {[...rides, ...rides].map((ride, idx) => (
-                            <div
-                                key={`${ride.id}-${idx}`}
-                                className="group relative w-[300px] md:w-[400px] h-[500px] flex-shrink-0 overflow-hidden cursor-pointer border-4 border-zinc-900 hover:border-rot-red hover:shadow-[0_0_30px_rgba(220,38,38,0.3)] transition-all duration-500 ease-out"
-                            >
-                                {/* Image Container (keeps grayscale-to-color logic) */}
-                                <div className="absolute inset-0 overflow-hidden">
-                                    <img
-                                        src={ride.image}
-                                        alt={`${ride.title} - ${ride.type} by Riders of Technopark`}
-                                        className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
-                                    />
-                                </div>
+                {/* Draggable Slider Container */}
+                <div className="relative mt-10 -mx-4 sm:-mx-6 lg:-mx-8 py-4 group">
+                    {/* Controls */}
+                    <button
+                        onClick={() => handleScroll('left')}
+                        className="absolute left-8 sm:left-12 top-1/2 -translate-y-1/2 w-14 h-14 flex items-center justify-center bg-black/80 border-2 border-zinc-800 text-white hover:border-rot-red hover:bg-rot-red transition-all duration-300 z-30 cursor-pointer opacity-0 group-hover:opacity-100 hidden md:flex"
+                    >
+                        <ChevronLeft size={32} />
+                    </button>
 
-                                {/* Ride Number Tag */}
-                                <div className="absolute top-4 right-4 z-20">
-                                    <span className="bg-rot-red text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-wider border border-white/20 shadow-lg">
-                                        #Ride_{ride.id}
-                                    </span>
-                                </div>
+                    <button
+                        onClick={() => handleScroll('right')}
+                        className="absolute right-8 sm:right-12 top-1/2 -translate-y-1/2 w-14 h-14 flex items-center justify-center bg-black/80 border-2 border-zinc-800 text-white hover:border-rot-red hover:bg-rot-red transition-all duration-300 z-30 cursor-pointer opacity-0 group-hover:opacity-100 hidden md:flex"
+                    >
+                        <ChevronRight size={32} />
+                    </button>
 
-                                {/* Dark Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500 ease-out" />
+                    <div
+                        className="relative overflow-hidden"
+                        ref={containerRef}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                        onTouchStart={() => setIsHovered(true)}
+                        onTouchEnd={() => setIsHovered(false)}
+                    >
+                        <motion.div
+                            ref={carouselRef}
+                            className="flex gap-6 w-max px-4 sm:px-6 lg:px-8 cursor-grab active:cursor-grabbing"
+                            drag="x"
+                            dragConstraints={{ right: 0, left: dragConstraint * 2 }} // Allow dragging past end to loop
+                            style={{ x }}
+                            onDrag={(e, info) => {
+                                // Manual infinite loop handling during drag
+                                let currentX = x.get();
+                                if (currentX > 0) x.set(dragConstraint + currentX);
+                                else if (currentX < dragConstraint) x.set(currentX - dragConstraint);
+                            }}
+                        >
+                            {/* We render 3 sets to ensure smooth infinite looping in both directions */}
+                            {[...rides, ...rides, ...rides].map((ride, idx) => (
+                                <motion.div
+                                    key={`${ride.id}-${idx}`}
+                                    className="group relative w-[300px] md:w-[400px] h-[500px] flex-shrink-0 overflow-hidden border-4 border-zinc-900 hover:border-rot-red hover:shadow-[0_0_30px_rgba(220,38,38,0.3)] transition-colors duration-500 ease-out"
+                                >
+                                    {/* Image Container (keeps grayscale-to-color logic) */}
+                                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                                        <img
+                                            src={ride.image}
+                                            alt={`${ride.title} - ${ride.type} by Riders of Technopark`}
+                                            className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                                        />
+                                    </div>
 
-                                {/* Red accent bar */}
-                                <div className="absolute top-0 left-0 w-0 h-2 bg-rot-red group-hover:w-full transition-all duration-500 ease-out" />
+                                    {/* Ride Number Tag */}
+                                    <div className="absolute top-4 right-4 z-20 pointer-events-none">
+                                        <span className="bg-rot-red text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-wider border border-white/20 shadow-lg">
+                                            #Ride_{ride.id}
+                                        </span>
+                                    </div>
 
-                                {/* Content */}
-                                <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-0 transition-transform duration-300">
-                                    <span className="inline-block bg-rot-red text-white text-xs font-bold px-3 py-1 mb-3 tracking-wider uppercase font-sans">
-                                        {ride.type}
-                                    </span>
+                                    {/* Dark Gradient Overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500 ease-out pointer-events-none" />
 
-                                    <h3 className="text-2xl font-black text-white uppercase mb-3 group-hover:text-rot-red transition-colors duration-300 ease-out">
-                                        {ride.title}
-                                    </h3>
+                                    {/* Red accent bar */}
+                                    <div className="absolute top-0 left-0 w-0 h-2 bg-rot-red group-hover:w-full transition-all duration-500 ease-out pointer-events-none" />
 
-                                    <div className="flex items-center justify-between text-gray-400 text-sm font-sans">
-                                        <div className="flex items-center gap-2">
-                                            <MapPin size={14} className="text-rot-red" />
-                                            <span>{ride.location}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Calendar size={14} className="text-rot-red" />
-                                            <span>{ride.date}</span>
+                                    {/* Content */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-0 transition-transform duration-300 pointer-events-none">
+                                        <span className="inline-block bg-rot-red text-white text-xs font-bold px-3 py-1 mb-3 tracking-wider uppercase font-sans">
+                                            {ride.type}
+                                        </span>
+
+                                        <h3 className="text-2xl font-black text-white uppercase mb-3 group-hover:text-rot-red transition-colors duration-300 ease-out">
+                                            {ride.title}
+                                        </h3>
+
+                                        <div className="flex items-center justify-between text-gray-400 text-sm font-sans">
+                                            <div className="flex items-center gap-2">
+                                                <MapPin size={14} className="text-rot-red" />
+                                                <span>{ride.location}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Calendar size={14} className="text-rot-red" />
+                                                <span>{ride.date}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        ))}
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                        {/* Left/Right Overlays for smooth edge fading */}
+                        <div className="absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+                        <div className="absolute inset-y-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
                     </div>
-
-                    {/* Left/Right Overlays for smooth edge fading */}
-                    <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-                    <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
                 </div>
+
                 {/* Mobile View All Button */}
                 <div className="mt-12 text-center md:hidden">
                     <Link

@@ -127,7 +127,7 @@ const ImageUploader = ({ value, onChange, label, preview = true, previewHeight =
                             <h3 className="text-white font-bold uppercase tracking-wider">Crop Image</h3>
                             <button
                                 onClick={handleCropCancel}
-                                className="text-gray-400 hover:text-white transition-colors"
+                                className="text-gray-400 hover:text-white transition-colors cursor-pointer"
                             >
                                 <X size={24} />
                             </button>
@@ -164,13 +164,13 @@ const ImageUploader = ({ value, onChange, label, preview = true, previewHeight =
                             <div className="flex gap-4">
                                 <button
                                     onClick={handleCropCancel}
-                                    className="flex-1 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 transition-colors text-white font-bold uppercase tracking-wider"
+                                    className="flex-1 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 transition-colors text-white font-bold uppercase tracking-wider cursor-pointer"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleCropSave}
-                                    className="flex-1 px-6 py-3 bg-rot-red hover:bg-red-800 transition-colors text-white font-bold uppercase tracking-wider flex items-center justify-center gap-2"
+                                    className="flex-1 px-6 py-3 bg-rot-red hover:bg-red-800 transition-colors text-white font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
                                 >
                                     <Check size={18} />
                                     Apply Crop
@@ -186,7 +186,7 @@ const ImageUploader = ({ value, onChange, label, preview = true, previewHeight =
                 <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex-1 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 transition-colors text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 border-2 border-zinc-700 hover:border-rot-red"
+                    className="flex-1 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 transition-colors text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 border-2 border-zinc-700 hover:border-rot-red cursor-pointer"
                 >
                     <Upload size={16} />
                     Upload & Crop
@@ -200,7 +200,7 @@ const ImageUploader = ({ value, onChange, label, preview = true, previewHeight =
                         <button
                             type="button"
                             onClick={() => convertUrlToBase64(value)}
-                            className="text-[10px] bg-rot-red/20 hover:bg-rot-red text-rot-red hover:text-white px-2 py-1 transition-all border border-rot-red/50"
+                            className="text-[10px] bg-rot-red/20 hover:bg-rot-red text-rot-red hover:text-white px-2 py-1 transition-all border border-rot-red/50 cursor-pointer"
                         >
                             Convert to Local
                         </button>
@@ -243,7 +243,7 @@ const ImageUploader = ({ value, onChange, label, preview = true, previewHeight =
                                 setImageToCrop(value);
                                 setShowCropper(true);
                             }}
-                            className="absolute top-2 right-2 bg-rot-red text-white px-3 py-1 text-xs font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1"
+                            className="absolute top-2 right-2 bg-rot-red text-white px-3 py-1 text-xs font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 cursor-pointer"
                         >
                             <Crop size={14} />
                             Re-crop

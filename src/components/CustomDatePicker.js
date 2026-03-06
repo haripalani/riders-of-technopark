@@ -67,7 +67,7 @@ const CustomDatePicker = ({ value, onChange, label, placeholder }) => {
                     key={day}
                     type="button"
                     onClick={() => handleDateSelect(day)}
-                    className={`p-2 w-10 h-10 flex items-center justify-center text-sm font-bold transition-all rounded-sm hover:bg-rot-red/20 hover:text-rot-red ${isSelected ? 'bg-rot-red text-white' : 'text-zinc-400'
+                    className={`p-2 w-10 h-10 flex items-center justify-center text-sm font-bold transition-all rounded-sm hover:bg-rot-red/20 hover:text-rot-red cursor-pointer ${isSelected ? 'bg-rot-red text-white' : 'text-zinc-400'
                         }`}
                 >
                     {day}
@@ -88,7 +88,7 @@ const CustomDatePicker = ({ value, onChange, label, placeholder }) => {
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`w-full bg-zinc-900/50 border ${isOpen ? 'border-rot-red' : 'border-zinc-800'} p-4 flex items-center justify-between transition-all duration-300 h-[60px] text-zinc-100`}
+                className={`w-full bg-zinc-900/50 border ${isOpen ? 'border-rot-red' : 'border-zinc-800'} p-4 flex items-center justify-between transition-all duration-300 h-[60px] text-zinc-100 cursor-pointer`}
             >
                 <span className={`${!value ? 'text-zinc-500 font-medium' : 'text-white font-bold'}`}>
                     {value ? new Date(value).toLocaleDateString() : placeholder}
@@ -105,7 +105,7 @@ const CustomDatePicker = ({ value, onChange, label, placeholder }) => {
                         className="absolute z-[70] left-0 mt-2 bg-zinc-900 border border-zinc-800 shadow-2xl p-4 w-72"
                     >
                         <div className="flex items-center justify-between mb-4">
-                            <button type="button" onClick={() => changeMonth(-1)} className="p-1 hover:text-rot-red text-zinc-500">
+                            <button type="button" onClick={() => changeMonth(-1)} className="p-1 hover:text-rot-red text-zinc-500 cursor-pointer">
                                 <ChevronLeft size={20} />
                             </button>
                             <div className="flex gap-2">
@@ -124,7 +124,7 @@ const CustomDatePicker = ({ value, onChange, label, placeholder }) => {
                                     {years.map(y => <option key={y} value={y} className="bg-zinc-900">{y}</option>)}
                                 </select>
                             </div>
-                            <button type="button" onClick={() => changeMonth(1)} className="p-1 hover:text-rot-red text-zinc-500">
+                            <button type="button" onClick={() => changeMonth(1)} className="p-1 hover:text-rot-red text-zinc-500 cursor-pointer">
                                 <ChevronRight size={20} />
                             </button>
                         </div>

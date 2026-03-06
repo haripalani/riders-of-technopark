@@ -203,7 +203,7 @@ export const siteContent = {
             location: "Maharashtra",
             date: "17 - 22 December 2025",
             image: "/assets/images/IBW_2025.jpg",
-            type: "Upcoming"
+            type: "India Bike Week"
         },
         {
             id: 15,

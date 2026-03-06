@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadContent, fetchLiveContent } from '../data/content';
-import Cursor from './Cursor';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Preloader from './Preloader';

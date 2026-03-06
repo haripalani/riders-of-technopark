@@ -43,7 +43,18 @@ The development server will start at `http://localhost:5173` (or another port if
 - **`npm run preview`** - Preview the production build locally
 - **`npm run lint`** - Run ESLint to check code quality
 
-## 🛠️ Development Workflow
+## �️ Database Management
+
+### Migrating Data to MongoDB
+
+To sync the initial site content (`src/data/content.js`) into your MongoDB database, run the following command. Make sure your `.env.local` contains a valid `MONGODB_URI`:
+
+```bash
+npm run migrate
+```
+*Note: You can also run it directly using `node src/scripts/migrate.js`*
+
+## �🛠️ Development Workflow
 
 ### Working on a New Feature
 
