@@ -1,22 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
-import { loadContent } from '../data/content';
 
-const FAQ = ({ content: initialContent }) => {
+const FAQ = ({ content }) => {
     const [openIndex, setOpenIndex] = useState(null);
-    const [content, setContent] = useState(initialContent || loadContent());
-
-    useEffect(() => {
-        if (initialContent) {
-            setContent(initialContent);
-        } else {
-            setContent(loadContent());
-        }
-    }, [initialContent]);
 
     if (!content) return null;
 

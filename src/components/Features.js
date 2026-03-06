@@ -1,21 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Users, Wrench, Award } from 'lucide-react';
-import { loadContent } from '../data/content';
 
-const Features = ({ content: initialContent }) => {
-    const [content, setContent] = useState(initialContent || loadContent());
-
-    useEffect(() => {
-        if (initialContent) {
-            setContent(initialContent);
-        } else {
-            setContent(loadContent());
-        }
-    }, [initialContent]);
-
+const Features = ({ content }) => {
     if (!content) return null;
 
     // Icon mapping

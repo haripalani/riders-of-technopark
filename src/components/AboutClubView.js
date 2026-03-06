@@ -1,11 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { loadContent, fetchLiveContent } from '../data/content';
+import Image from 'next/image';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Preloader from './Preloader';
+
+const MemoNavbar = memo(Navbar);
+const MemoFooter = memo(Footer);
 
 const AboutClubView = () => {
     const [content, setContent] = useState(loadContent());
@@ -50,7 +55,7 @@ const AboutClubView = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1 }}
                 >
-                    <Navbar content={content} />
+                    <MemoNavbar content={content} />
 
                     <main className="pt-32 pb-20">
                         {/* Hero Header */}
@@ -107,15 +112,13 @@ const AboutClubView = () => {
                                                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
                                                     className="relative overflow-hidden"
                                                 >
-                                                    <img
+                                                    <Image
                                                         src={block.image}
                                                         alt={`Riders of Technopark Story Chapter ${chapterNum} - ${block.title}`}
+                                                        width={800}
+                                                        height={500}
                                                         className="w-full h-[400px] md:h-[500px] object-cover border-4 border-white/5 shadow-2xl"
                                                     />
-
-                                                    {/* Overlays */}
-                                                    <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-rot-red shadow-[0_0_15px_rgba(220,38,38,0.5)]"></div>
-                                                    <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-rot-red shadow-[0_0_15px_rgba(220,38,38,0.5)]"></div>
 
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
                                                         <span className="text-white font-black text-4xl opacity-20 uppercase distressed pointer-events-none tracking-tighter">
@@ -198,11 +201,26 @@ const AboutClubView = () => {
                                             "{content.about.storyCloser.title}"
                                         </h2>
 
-                                        <div className="flex flex-col items-center gap-4">
-                                            <div className="w-[1px] h-20 bg-gradient-to-b from-rot-red to-transparent"></div>
-                                            <span className="text-gray-600 font-bold tracking-widest uppercase text-[10px]">
-                                                {content.about.storyCloser.footer}
-                                            </span>
+                                        <div className="flex flex-col items-center gap-8 mt-12">
+                                            <div className="flex flex-col items-center gap-4">
+                                                <div className="w-[1px]  bg-gradient-to-b from-rot-red to-transparent"></div>
+                                                <span className="text-gray-600 font-bold tracking-widest uppercase text-[16px]">
+                                                    - {content.about.storyCloser.footer}
+                                                </span>
+                                            </div>
+
+                                            <motion.div
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className="mt-4"
+                                            >
+                                                <Link
+                                                    href="/join"
+                                                    className="inline-block bg-rot-red text-white font-black px-12 py-5 text-xl tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-500 shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] distressed uppercase"
+                                                >
+                                                    REGISTER NOW
+                                                </Link>
+                                            </motion.div>
                                         </div>
                                     </motion.div>
                                 </div>
@@ -210,7 +228,7 @@ const AboutClubView = () => {
                         )}
                     </main>
 
-                    <Footer content={content} />
+                    <MemoFooter content={content} />
                 </motion.div>
             )}
         </div>

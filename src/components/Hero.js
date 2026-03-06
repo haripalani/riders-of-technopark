@@ -1,22 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { loadContent } from '../data/content';
 
-const Hero = ({ content: initialContent }) => {
-    const [content, setContent] = useState(initialContent || loadContent());
-
-    useEffect(() => {
-        if (initialContent) {
-            setContent(initialContent);
-        } else {
-            setContent(loadContent());
-        }
-    }, [initialContent]);
-
+const Hero = ({ content }) => {
     if (!content) return null;
 
     return (
@@ -24,14 +14,12 @@ const Hero = ({ content: initialContent }) => {
             {/* Dark Overlay Background */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black z-10" />
-                <motion.img
-                    initial={{ scale: 1.1 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 10, ease: "easeOut" }}
+                <Image
                     src={content.hero.backgroundImage}
                     alt="Riders of Technopark - Kerala's Premier Tech Biking Brotherhood"
-                    className="w-full h-full object-cover grayscale"
-                    fetchPriority="high"
+                    fill
+                    priority
+                    className="object-cover grayscale"
                 />
             </div>
 

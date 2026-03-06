@@ -1,22 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { loadContent } from '../data/content';
 
-const Navbar = ({ content: initialContent }) => {
+const Navbar = ({ content }) => {
+    const pathname = usePathname();
+    const router = useRouter();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [content, setContent] = useState(initialContent || loadContent());
 
-    useEffect(() => {
-        if (initialContent) {
-            setContent(initialContent);
-        } else {
-            setContent(loadContent());
-        }
-    }, [initialContent]);
+    if (!content) return null;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -40,6 +36,32 @@ const Navbar = ({ content: initialContent }) => {
         { name: 'REGISTER', href: '/join', isButton: true },
     ];
 
+    const handleNavigation = (e, href) => {
+        const isHashLink = href.startsWith('/#');
+
+        if (isHashLink) {
+            const targetId = href.split('#')[1];
+
+            if (pathname === '/') {
+                // If we're already on the home page, just scroll smoothly
+                e.preventDefault();
+                const element = document.getElementById(targetId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMobileMenuOpen(false);
+            } else {
+                // If we are coming from another page, use native browser navigation 
+                // to ensure the browser cleanly scrolls to the hash unconditionally.
+                e.preventDefault();
+                window.location.href = href;
+                setIsMobileMenuOpen(false);
+            }
+        } else {
+            setIsMobileMenuOpen(false);
+        }
+    };
+
     return (
         <motion.nav
             initial={{ y: -100 }}
@@ -59,7 +81,8 @@ const Navbar = ({ content: initialContent }) => {
                             >
                                 <Link
                                     href={link.href}
-                                    className="text-white text-sm font-bold tracking-widest hover:text-rot-red transition-colors duration-300 ease-out"
+                                    onClick={(e) => handleNavigation(e, link.href)}
+                                    className="text-white text-sm font-bold tracking-widest hover:text-rot-red transition-colors duration-300 ease-out cursor-pointer"
                                 >
                                     {link.name}
                                 </Link>
@@ -91,10 +114,11 @@ const Navbar = ({ content: initialContent }) => {
                             >
                                 <Link
                                     href={link.href}
+                                    onClick={(e) => handleNavigation(e, link.href)}
                                     className={`${link.isButton
                                         ? "bg-rot-red text-white px-6 py-2 border-2 border-rot-red hover:bg-white hover:text-black hover:border-white transition-all duration-300"
                                         : "text-white hover:text-rot-red transition-colors duration-300"
-                                        } text-sm font-bold tracking-widest whitespace-nowrap`}
+                                        } text-sm font-bold tracking-widest whitespace-nowrap cursor-pointer`}
                                 >
                                     {link.name}
                                 </Link>
@@ -129,11 +153,11 @@ const Navbar = ({ content: initialContent }) => {
                                 <Link
                                     key={idx}
                                     href={link.href}
+                                    onClick={(e) => handleNavigation(e, link.href)}
                                     className={`${link.isButton
                                         ? "bg-rot-red text-white px-6 py-3 my-4 inline-block text-center w-full"
                                         : "block py-2 text-white hover:text-rot-red transition-colors duration-300"
-                                        } text-sm font-bold tracking-widest`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
+                                        } text-sm font-bold tracking-widest cursor-pointer`}
                                 >
                                     {link.name}
                                 </Link>

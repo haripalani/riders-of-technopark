@@ -1,21 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { loadContent } from '../data/content';
+import Image from 'next/image';
 
-const About = ({ content: initialContent }) => {
-    const [content, setContent] = useState(initialContent || loadContent());
-
-    useEffect(() => {
-        if (initialContent) {
-            setContent(initialContent);
-        } else {
-            setContent(loadContent());
-        }
-    }, [initialContent]);
-
+const About = ({ content }) => {
     if (!content) return null;
 
     const stats = content?.about?.stats || [];
@@ -77,7 +66,7 @@ const About = ({ content: initialContent }) => {
                                 <motion.button
                                     whileHover={{ scale: 1.05, backgroundColor: '#dc2626' }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="px-8 py-4 border-2 border-rot-red text-white font-black uppercase tracking-[0.2em] text-sm flex items-center gap-3 group transition-colors"
+                                    className="px-8 py-4 border-2 border-rot-red text-white font-black uppercase tracking-[0.2em] text-sm flex items-center gap-3 group transition-colors cursor-pointer"
                                 >
                                     Read Our Full Story
                                     <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -117,9 +106,11 @@ const About = ({ content: initialContent }) => {
                                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                                 className="relative overflow-hidden"
                             >
-                                <img
+                                <Image
                                     src={content.about.ridersImage}
                                     alt="Riders of Technopark - Motorcycling Brotherhood Group"
+                                    width={600}
+                                    height={600}
                                     className="w-full h-[600px] object-cover transition-all duration-700 ease-out border-4 border-white/10"
                                 />
                                 {/* Red overlay corners */}

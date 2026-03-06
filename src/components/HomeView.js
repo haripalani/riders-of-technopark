@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './Navbar';
 import Hero from './Hero';
@@ -12,6 +12,16 @@ import CTA from './CTA';
 import Footer from './Footer';
 import Preloader from './Preloader';
 import { fetchLiveContent, loadContent } from '../data/content.js';
+
+// Memoize components to prevent unnecessary re-renders
+const MemoNavbar = memo(Navbar);
+const MemoHero = memo(Hero);
+const MemoAbout = memo(About);
+const MemoFeatures = memo(Features);
+const MemoRides = memo(Rides);
+const MemoFAQ = memo(FAQ);
+const MemoCTA = memo(CTA);
+const MemoFooter = memo(Footer);
 
 const HomeView = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -29,18 +39,27 @@ const HomeView = () => {
         };
 
         loadInitialData();
-
-        // Skip loader if seen in this session
-        const hasSeenLoader = sessionStorage.getItem('rot_seen_loader');
-        if (hasSeenLoader) {
-            setIsLoading(false);
-        }
     }, []);
 
     const handlePreloaderComplete = () => {
         setIsLoading(false);
-        sessionStorage.setItem('rot_seen_loader', 'true');
     };
+
+    // Handle hash scrolling after content is loaded
+    useEffect(() => {
+        if (!isLoading && typeof window !== 'undefined' && window.location.hash) {
+            // Slight delay to ensure Framer Motion and React have finished rendering
+            // the DOM elements before we attempt to scroll
+            const timer = setTimeout(() => {
+                const id = window.location.hash.substring(1);
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [isLoading]);
 
     return (
         <div className="bg-black min-h-screen selection:bg-rot-red selection:text-white overflow-x-hidden">
@@ -56,14 +75,14 @@ const HomeView = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1 }}
                 >
-                    <Navbar content={content} />
-                    <Hero content={content} />
-                    <About content={content} />
-                    <Features content={content} />
-                    <Rides content={content} />
-                    <FAQ content={content} />
-                    <CTA content={content} />
-                    <Footer content={content} />
+                    <MemoNavbar content={content} />
+                    <MemoHero content={content} />
+                    <MemoAbout content={content} />
+                    <MemoFeatures content={content} />
+                    <MemoRides content={content} />
+                    <MemoFAQ content={content} />
+                    <MemoCTA content={content} />
+                    <MemoFooter content={content} />
                 </motion.div>
             )}
         </div>

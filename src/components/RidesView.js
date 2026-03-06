@@ -1,13 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, MapPin, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Preloader from './Preloader';
 import { fetchLiveContent, loadContent } from '../data/content';
+
+const MemoNavbar = memo(Navbar);
+const MemoFooter = memo(Footer);
 
 const RidesView = () => {
     const [content, setContent] = useState(loadContent()); // Start with local fallback
@@ -51,7 +55,7 @@ const RidesView = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1 }}
                 >
-                    <Navbar content={content} />
+                    <MemoNavbar content={content} />
 
                     <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                         {/* Back Button */}
@@ -103,7 +107,8 @@ const RidesView = () => {
 
                         {/* Rides Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {(content?.rides || [])
+                            {[...(content?.rides || [])]
+                                .reverse()
                                 .filter(ride => filter === 'ALL' || ride.type.toUpperCase() === filter)
                                 .map((ride, idx) => (
                                     <motion.div
@@ -112,49 +117,51 @@ const RidesView = () => {
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: idx * 0.05, duration: 0.5, ease: "easeOut" }}
-                                        className="group relative aspect-square overflow-hidden cursor-pointer border-4 border-zinc-900 hover:border-rot-red hover:shadow-[0_0_30px_rgba(220,38,38,0.3)] transition-all duration-500 ease-out bg-zinc-900"
+                                        className={`group relative aspect-square overflow-hidden cursor-pointer border-4 transition-all duration-500 ease-out bg-zinc-900 ${ride.featured
+                                            ? 'border-yellow-500 hover:border-yellow-400 hover:shadow-[0_0_30px_rgba(234,179,8,0.4)]'
+                                            : 'border-zinc-900 hover:border-rot-red hover:shadow-[0_0_30px_rgba(220,38,38,0.3)]'
+                                            }`}
                                     >
                                         {/* Image Container */}
                                         <div className="absolute inset-0 overflow-hidden">
-                                            <motion.img
-                                                whileHover={{ scale: 1.1 }}
-                                                transition={{ duration: 0.7, ease: "easeOut" }}
+                                            <Image
                                                 src={ride.image}
                                                 alt={ride.title}
-                                                className="w-full h-full object-cover transition-all duration-700 ease-out"
+                                                fill
+                                                className={`object-cover transition-all duration-700 ease-out group-hover:scale-110 ${ride.imagePosition || 'object-center'}`}
                                             />
                                         </div>
 
                                         {/* Ride Number Tag */}
                                         <div className="absolute top-4 right-4 z-20">
-                                            <span className="bg-rot-red text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-wider border border-white/20 shadow-lg">
-                                                #Ride_{ride.id}
+                                            <span className={`${ride.featured ? 'bg-yellow-500 text-black' : 'bg-rot-red text-white'} text-[10px] font-black px-2 py-0.5 uppercase tracking-wider border border-white/20 shadow-lg`}>
+                                                {ride.featured ? `#Ride_${ride.id} ★ ANNIVERSARY` : `#Ride_${ride.id}`}
                                             </span>
                                         </div>
 
                                         {/* Overlays */}
                                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
 
-                                        {/* Top Red Bar Animate-on-hover */}
-                                        <div className="absolute top-0 left-0 w-0 h-1 bg-rot-red group-hover:w-full transition-all duration-500 ease-out"></div>
+                                        {/* Top Accent Bar Animate-on-hover */}
+                                        <div className={`absolute top-0 left-0 w-0 h-1 group-hover:w-full transition-all duration-500 ease-out ${ride.featured ? 'bg-yellow-500' : 'bg-rot-red'}`}></div>
 
                                         {/* Content */}
                                         <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                                            <span className="inline-block bg-rot-red text-white text-[10px] font-bold px-2 py-1 mb-3 tracking-wider uppercase font-sans">
+                                            <span className={`inline-block text-[10px] font-bold px-2 py-1 mb-3 tracking-wider uppercase font-sans ${ride.featured ? 'bg-yellow-500 text-black' : 'bg-rot-red text-white'}`}>
                                                 {ride.type}
                                             </span>
 
-                                            <h3 className="text-xl font-black text-white uppercase mb-3 leading-tight group-hover:text-rot-red transition-colors duration-300">
+                                            <h3 className={`text-xl font-black text-white uppercase mb-3 leading-tight transition-colors duration-300 ${ride.featured ? 'group-hover:text-yellow-400' : 'group-hover:text-rot-red'}`}>
                                                 {ride.title}
                                             </h3>
 
                                             <div className="flex flex-col gap-2 border-t border-white/10 pt-3 mt-2 font-sans">
                                                 <div className="flex items-center text-gray-400 text-xs tracking-wide">
-                                                    <MapPin className="text-rot-red mr-2" size={12} />
+                                                    <MapPin className={`${ride.featured ? 'text-yellow-500' : 'text-rot-red'} mr-2`} size={12} />
                                                     <span>{ride.location}</span>
                                                 </div>
                                                 <div className="flex items-center text-gray-400 text-xs tracking-wide">
-                                                    <Calendar className="text-rot-red mr-2" size={12} />
+                                                    <Calendar className={`${ride.featured ? 'text-yellow-500' : 'text-rot-red'} mr-2`} size={12} />
                                                     <span>{ride.date}</span>
                                                 </div>
                                             </div>
@@ -164,7 +171,7 @@ const RidesView = () => {
                         </div>
                     </main>
 
-                    <Footer content={content} />
+                    <MemoFooter content={content} />
                 </motion.div>
             )}
         </div>

@@ -203,7 +203,8 @@ export const siteContent = {
             location: "Maharashtra",
             date: "17 - 22 December 2025",
             image: "/assets/images/IBW_2025.jpg",
-            type: "India Bike Week"
+            type: "India Bike Week",
+            imagePosition: "object-bottom"
         },
         {
             id: 15,
@@ -235,7 +236,8 @@ export const siteContent = {
             location: "Idukki",
             date: "14–15 March 2026",
             image: "/assets/images/Anniversary.jpeg",
-            type: "Upcoming"
+            type: "Upcoming",
+            featured: true
         }
     ],
     faq: {

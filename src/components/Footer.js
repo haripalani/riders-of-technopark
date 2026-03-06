@@ -1,21 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Mail, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
-import { loadContent } from '../data/content';
+import { usePathname } from 'next/navigation';
 
-const Footer = ({ content: initialContent }) => {
-    const [content, setContent] = useState(initialContent || loadContent());
-
-    useEffect(() => {
-        if (initialContent) {
-            setContent(initialContent);
-        } else {
-            setContent(loadContent());
-        }
-    }, [initialContent]);
+const Footer = ({ content }) => {
+    const pathname = usePathname();
 
     if (!content) return null;
 
@@ -26,11 +17,27 @@ const Footer = ({ content: initialContent }) => {
     ];
 
     const quickLinks = [
-        { name: 'About Us', href: '/about' },
+        { name: 'About Us', href: '/#about' },
         { name: 'Rides', href: '/rides' },
         { name: 'Gallery', href: '/#gallery' },
         { name: 'Contact', href: '/#contact' },
     ];
+
+    const handleNavigation = (e, href) => {
+        if (href.startsWith('/#')) {
+            const targetId = href.split('#')[1];
+            if (pathname === '/') {
+                e.preventDefault();
+                const element = document.getElementById(targetId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                e.preventDefault();
+                window.location.href = href;
+            }
+        }
+    };
 
     return (
         <footer className="bg-black border-t-4 border-rot-red">
@@ -82,7 +89,8 @@ const Footer = ({ content: initialContent }) => {
                                 <li key={idx}>
                                     <Link
                                         href={link.href}
-                                        className="text-gray-400 hover:text-rot-red transition-colors duration-300 ease-out text-sm"
+                                        onClick={(e) => handleNavigation(e, link.href)}
+                                        className="text-gray-400 hover:text-rot-red transition-colors duration-300 ease-out text-sm cursor-pointer"
                                     >
                                         {link.name}
                                     </Link>

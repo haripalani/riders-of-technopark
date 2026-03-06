@@ -1,21 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { loadContent } from '../data/content';
 
-const CTA = ({ content: initialContent }) => {
-    const [content, setContent] = useState(initialContent || loadContent());
-
-    useEffect(() => {
-        if (initialContent) {
-            setContent(initialContent);
-        } else {
-            setContent(loadContent());
-        }
-    }, [initialContent]);
-
+const CTA = ({ content }) => {
     if (!content || !content.cta) return null;
 
     return (
